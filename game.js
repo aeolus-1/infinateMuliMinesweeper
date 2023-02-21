@@ -20,7 +20,7 @@ function renderLoop() {
     )
     ctx.save()
         ctx.beginPath()
-        ctx.arc(mouseScreenPos.x, mouseScreenPos.y, 20, 0, Math.PI*2)
+        //ctx.arc(mouseScreenPos.x, mouseScreenPos.y, 20, 0, Math.PI*2)
         ctx.fill()
         ctx.closePath()
     ctx.restore()
@@ -46,7 +46,6 @@ function drawGrid(size) {
         (Math.floor((camera.pos.y*camera.zoom)/grid)*grid)
         )
         
-console.log(mod)
 
     ctx.save()
     ctx.translate(camera.pos.x%grid,camera.pos.y%grid)
@@ -171,7 +170,6 @@ function countNeighbours(tilePos) {
         var count = 0
     for (let i = 0; i < neighbours.length; i++) {
         const nei = neighbours[i];
-        console.log(nei)
         let pos = v(
             tilePos.x+nei.x,
             tilePos.y+nei.y

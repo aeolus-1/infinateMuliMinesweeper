@@ -19,8 +19,8 @@ document.addEventListener("mousedown", (e)=>{
     ),e.which==3)
     
 })
-var keys = {}
-document.addEventListener("keydown", (e)=>{keys[e.key.toLowerCase()]=true})
+var keys = {};
+/*document.addEventListener("keydown", (e)=>{keys[e.key.toLowerCase()]=true})*/
 document.addEventListener("keyup", (e)=>{keys[e.key.toLowerCase()]=false})
 
 function runControls() {
