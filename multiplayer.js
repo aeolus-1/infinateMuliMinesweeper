@@ -10,7 +10,7 @@ function outputClick(data) {
         ...data,
     }
     console.log(data)
-    socket.send("makeClick", JSON.stringify(data))
+    socket.emit("makeClick", JSON.stringify(data))
 }
 
 
