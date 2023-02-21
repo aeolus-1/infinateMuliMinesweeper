@@ -99,7 +99,7 @@ function drawSquare(pos,x,y,size) {
     }
 }
 function runClick(tilePos, flag=false) {
-    if (false) {
+    if (true) {
     outputClick({
         pos:tilePos,
         flag:flag,
