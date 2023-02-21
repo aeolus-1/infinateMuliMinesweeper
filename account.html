@@ -13,7 +13,7 @@
 <script>
       const socket = io("https://infms.xl83.dev/")
       function submit() {
-          var username = document.getElementById("username")
+          var username = document.getElementById("username").value
           socket.send("account", username)
       }
 </script>
