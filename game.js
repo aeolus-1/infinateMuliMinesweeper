@@ -92,8 +92,8 @@ function drawGrid(size) {
 }
 function drawSquare(pos,x,y,size) {
     var tile = mainChunks.requestTile(x,y)
-    //console.log(tile.mine)
-    ctx.fillStyle = tile.uncovered?tile.mine?"#444":"#ccc":tile.flagged?"#f00":"#fff"
+
+    ctx.fillStyle = tile.uncovered?"#bbb":"#fff"
     ctx.fillRect(pos.x, pos.y, size,size)
     
     if (tile.uncovered && !tile.mine) {
@@ -105,7 +105,16 @@ function drawSquare(pos,x,y,size) {
         ctx.textBaseline = "middle"
         var text = tile.count,//tile.count==0?"":tile.count,
             width = ctx.measureText(text).width
+        
         ctx.fillText(tile.count,pos.x+(size/2)+(-width/2),pos.y+(size/2))
+    }
+    if (tile.uncovered && tile.mine) {
+        var flagImg = document.getElementById("bombImg")
+        ctx.drawImage(flagImg, pos.x,pos.y, size,size)
+    }
+    if (tile.flagged) {
+        var flagImg = document.getElementById("flagImg")
+        ctx.drawImage(flagImg, pos.x,pos.y, size,size)
     }
 }
 function runClick(tilePos, flag=false, tick=4) {
