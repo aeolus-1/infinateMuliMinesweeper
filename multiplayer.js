@@ -12,9 +12,7 @@ function outputClick(data) {
     socket.send("makeClick", JSON.stringify(data))
 }
 
-function requestChunksFromServer() {
-    socket.send("requestingChunksDaddy")
-}
+
 
 const socket = io("https://infms.xl83.dev", {
     reconnection: true,
@@ -26,7 +24,7 @@ const socket = io("https://infms.xl83.dev", {
 
     })
 
-    socket.on('returningChunks', function(data) {
+    socket.on('chunkUpdate', function(data) {
         console.log("got chunks", data)
         recieveInput(data)
     })
