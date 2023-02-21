@@ -10,11 +10,12 @@
     <input id="username"/>
     <button onclick="submit()">Submit</button>
 </body>
+<script src="socket.io.min.js"></script>
 <script>
       const socket = io("https://infms.xl83.dev/")
       function submit() {
           var username = document.getElementById("username").value
-          socket.send("account", username)
+          socket.emit("account", username)
       }
 </script>
 </html>
