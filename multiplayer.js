@@ -18,4 +18,11 @@ const socket = io("https://infms.xl83.dev", {
 
 
     socket.on('connect', function() {
+
     })
+
+    socket.on('reciveChunks', function(data) {
+        console.log("got chunks", data)
+        recieveInput(data)
+    })
+    

@@ -27,7 +27,7 @@ function tileArray2d(e, t, n, r, c) {
 
 function cTile(e, t) {
     this.pos = v(e, t)
-    this.mine = Math.random()>1-(1/6)
+    this.mine = Math.random()<(1/6)
     this.uncovered = false
     this.flagged = false
     this.count = 0
