@@ -109,12 +109,12 @@ function drawSquare(pos,x,y,size) {
     }
 }
 function runClick(tilePos, flag=false, tick=4) {
-    if (window.location.protocol != "file:") {
+//    if (window.location.protocol != "file:") {
     outputClick({
         pos:tilePos,
         flag:flag,
     })
-} else {
+
     
     var count = countNeighbours(tilePos)
 
@@ -139,7 +139,7 @@ function runClick(tilePos, flag=false, tick=4) {
             }
         }
     }
-}
+
 }
 function getNeighbours(tilePos) {
     
