@@ -17,6 +17,7 @@
       function submit() {
           var username = document.getElementById("username").value
           var browserId = getBrowserId()
+          console.log(browserId)
           socket.emit("account", {
               "usename": username,
               "id": browserId
