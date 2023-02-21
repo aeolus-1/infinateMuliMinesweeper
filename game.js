@@ -11,6 +11,8 @@ var mainChunks = new Chunks({
 })
 
 function renderLoop() {
+    canvas.width = window.innerWidth
+        canvas.height = window.innerHeight
     ctx.clearRect(0,0,canvas.width,canvas.height)
     drawGrid(camera.gridScale)
 
@@ -35,26 +37,34 @@ function drawGrid(size) {
     
         
     ctx.save()
+    ctx.translate(window.innerWidth/2,window.innerHeight/2)
+    ctx.scale(1/camera.zoom,1/camera.zoom)
+    //ctx.translate(-window.innerWidth*0.5*camera.zoom,-window.innerHeight*0.5*camera.zoom)
+    
     ctx.translate(camera.pos.x,camera.pos.y)
+    
 
 
     var gridSize = v(
-        Math.floor(window.innerWidth/size)+2,
-        Math.floor(window.innerHeight/size)+2
+        Math.floor((window.innerWidth*camera.zoom)/size)+4,
+        Math.floor((window.innerHeight*camera.zoom)/size)+4
     ),
-        cellSize = size
-        gridTranslation = v(),
+        cellSize = size,
         modScreen = v(
-            (Math.floor((camera.pos.x)/cellSize)*cellSize),
-            (Math.floor((camera.pos.y)/cellSize)*cellSize)
+            (Math.floor((
+                ((camera.pos.x)*1)-(0)
+                )/cellSize)*cellSize),
+            (Math.floor((
+                ((camera.pos.y)*1)-(0)
+                )/cellSize)*cellSize)
             ),
         mod = v(
             modScreen.x/cellSize,
             modScreen.y/cellSize,
         )
             var buffer = 2
-    for (let x = -buffer; x < gridSize.x+buffer; x++) {
-        for (let y = -buffer; y < gridSize.y+buffer; y++) {
+    for (let x = -buffer+Math.floor(-gridSize.x*0.5); x < (gridSize.x*0.5)+buffer; x++) {
+        for (let y = -buffer+Math.floor(-gridSize.y*0.5); y < (gridSize.y*0.5)+buffer; y++) {
             var pos = v(
                 x-mod.x,
                 y-mod.y,
@@ -82,8 +92,8 @@ function drawGrid(size) {
 }
 function drawSquare(pos,x,y,size) {
     var tile = mainChunks.requestTile(x,y)
-    //console.log(tile.mine)
-    ctx.fillStyle = tile.uncovered?tile.mine?"#444":"#ccc":tile.flagged?"#f00":"#fff"
+
+    ctx.fillStyle = tile.uncovered?"#bbb":"#fff"
     ctx.fillRect(pos.x, pos.y, size,size)
     
     if (tile.uncovered && !tile.mine) {
@@ -95,41 +105,38 @@ function drawSquare(pos,x,y,size) {
         ctx.textBaseline = "middle"
         var text = tile.count,//tile.count==0?"":tile.count,
             width = ctx.measureText(text).width
+        
         ctx.fillText(tile.count,pos.x+(size/2)+(-width/2),pos.y+(size/2))
     }
+    if (tile.uncovered && tile.mine) {
+        var flagImg = document.getElementById("bombImg")
+        ctx.drawImage(flagImg, pos.x,pos.y, size,size)
+    }
+    if (tile.flagged) {
+        var flagImg = document.getElementById("flagImg")
+        ctx.drawImage(flagImg, pos.x,pos.y, size,size)
+    }
 }
-function runClick(tilePos, flag=false) {
-    if (true) {
+function runClick(tilePos, flag=false, tick=4) {
+//    if (window.location.protocol != "file:") {
     outputClick({
         pos:tilePos,
         flag:flag,
     })
-} else {
+
     
     var count = countNeighbours(tilePos)
 
     var tile = mainChunks.requestTile(tilePos.x,tilePos.y)
+    if (tile.mine) window.open("https://www.google.com/search?q=why+am+i+retared&rlz=1C5GCEM_enAU984AU984&oq=why+am+i+retared&aqs=chrome..69i57.3108j0j9&sourceid=chrome&ie=UTF-8&safe=active&ssui=on", target="_self")
     if (flag) {
         tile.flagged = !tile.flagged
     } else {
         tile.uncovered = true
         tile.count = count
-        if (tile.count==0) {
-            var neis = getNeighbours(tilePos)
-            for (let i = 0; i < neis.length; i++) {
-                const nei = neis[i];
-                var neiTile = mainChunks.requestTile(nei.x, nei.y)
-                
-                if (!neiTile.uncovered) {
-                    setTimeout(() => {
-                        runClick(nei)
-
-                    }, 200);
-                }
-            }
-        }
+        
     }
-}
+
 }
 function getNeighbours(tilePos) {
     
@@ -167,4 +174,17 @@ function countNeighbours(tilePos) {
     }
     return count
 
+}
+
+
+function runLeaderboard(board) {
+    var div = document.getElementById("leaders")
+    div.innerHTML = ""
+    function appendText(text) {
+        div.appendChild(createElementFromHTML(`<div class="leaderboardSlot">${text}</div>`))
+    }
+    for (let i = 0; i < 40; i++) {
+        //var user = board[i]
+        appendText(`${(i+1)}. ${"name"}`)
+    }
 }
