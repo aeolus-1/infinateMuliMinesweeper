@@ -124,20 +124,7 @@ function runClick(tilePos, flag=false, tick=4) {
     } else {
         tile.uncovered = true
         tile.count = count
-        if (tile.count==0) {
-            var neis = getNeighbours(tilePos)
-            for (let i = 0; i < neis.length; i++) {
-                const nei = neis[i];
-                var neiTile = mainChunks.requestTile(nei.x, nei.y)
-                
-                if (!neiTile.uncovered && tick>0) {
-                    setTimeout(() => {
-                        runClick(nei, false,tick-1)
-
-                    }, 200);
-                }
-            }
-        }
+        
     }
 
 }
