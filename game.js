@@ -46,7 +46,7 @@ function drawGrid(size) {
         (Math.floor((camera.pos.y*camera.zoom)/grid)*grid)
         )
         
-
+        console.log(mod)
     ctx.save()
     ctx.translate(camera.pos.x%grid,camera.pos.y%grid)
 
@@ -60,8 +60,8 @@ function drawGrid(size) {
                     j * grid + mod.y,
 
                 ),
-                i,
-                j,
+                i+(mod.x/grid),
+                j+(mod.y/grid),
                 size
             )
         }
@@ -126,7 +126,6 @@ function runClick(tilePos, flag=false) {
         tile.uncovered = true
         tile.count = count
         if (tile.count==0) {
-            console.log(tile)
             var neis = getNeighbours(tilePos)
             for (let i = 0; i < neis.length; i++) {
                 const nei = neis[i];
