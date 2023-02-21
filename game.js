@@ -14,16 +14,7 @@ function renderLoop() {
     ctx.clearRect(0,0,canvas.width,canvas.height)
     drawGrid(camera.gridScale)
 
-    var mouseScreenPos = v(
-        (mouse.pos.x-(camera.pos.x*0))*camera.zoom,
-        (mouse.pos.y-(camera.pos.y*0))*camera.zoom
-    )
-    ctx.save()
-        ctx.beginPath()
-        //ctx.arc(mouseScreenPos.x, mouseScreenPos.y, 20, 0, Math.PI*2)
-        ctx.fill()
-        ctx.closePath()
-    ctx.restore()
+   
 
     camera.pos = v(
         camera.pos.x+((camera.target.x-camera.pos.x)*0.1),
@@ -41,53 +32,51 @@ function drawGrid(size) {
     )
 
 
-    let mod = v(
-        (Math.floor((camera.pos.x*camera.zoom)/grid)*grid),
-        (Math.floor((camera.pos.y*camera.zoom)/grid)*grid)
-        )
+    
         
-        console.log(mod)
     ctx.save()
-    ctx.translate(camera.pos.x%grid,camera.pos.y%grid)
+    ctx.translate(camera.pos.x,camera.pos.y)
 
 
-    var bu = 8
-    for (let i = -bu; i < ((dim.x) / grid)+bu; i++) {
-        for (let j= -bu; j < ((dim.y) / grid)+bu; j++) {
-            drawSquare(
-                v(
-                    i * grid + mod.x,
-                    j * grid + mod.y,
+    var gridSize = v(
+        Math.floor(window.innerWidth/size)+2,
+        Math.floor(window.innerHeight/size)+2
+    ),
+        cellSize = size
+        gridTranslation = v(),
+        modScreen = v(
+            (Math.floor((camera.pos.x)/cellSize)*cellSize),
+            (Math.floor((camera.pos.y)/cellSize)*cellSize)
+            ),
+        mod = v(
+            modScreen.x/cellSize,
+            modScreen.y/cellSize,
+        )
+            var buffer = 2
+    for (let x = -buffer; x < gridSize.x+buffer; x++) {
+        for (let y = -buffer; y < gridSize.y+buffer; y++) {
+            var pos = v(
+                x-mod.x,
+                y-mod.y,
+            ),
+            screenPos =v(pos.x*cellSize,pos.y*cellSize)
+                
+            drawSquare(screenPos, pos.x, pos.y, cellSize)
+            ctx.beginPath()
 
-                ),
-                i+(mod.x/grid),
-                j+(mod.y/grid),
-                size
-            )
+            ctx.moveTo(screenPos.x,screenPos.y+cellSize)
+            ctx.lineTo(screenPos.x,screenPos.y)
+            ctx.lineTo(screenPos.x+cellSize,screenPos.y)
+
+            ctx.strokeStyle = "#000"
+            ctx.stroke()
+
+            ctx.closePath()
+            
         }
     }
-    for (let i = -bu; i < ((dim.x) / grid)+bu; i++) {
-        ctx.beginPath()
-        ctx.moveTo((i * grid), 0-(bu*grid))
 
-        ctx.lineTo(i * grid, (dim.y) + (bu*grid))
-
-        ctx.closePath()
-
-        ctx.stroke()
-    }
     
-    for (let i = -bu; i < ((dim.y) / grid)+bu; i++) {
-        ctx.beginPath()
-        ctx.moveTo(0-(bu*grid), i * grid)
-
-        ctx.lineTo((dim.x+(bu*grid)) + mod.x, i * grid)
-
-        ctx.closePath()
-
-        ctx.stroke()
-    }
-
     ctx.restore()
     
 }
@@ -110,7 +99,7 @@ function drawSquare(pos,x,y,size) {
     }
 }
 function runClick(tilePos, flag=false) {
-    if (false) {
+    if (true) {
     outputClick({
         pos:tilePos,
         flag:flag,
