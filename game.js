@@ -75,7 +75,11 @@ function drawSquare(pos,x,y,size) {
     ctx.fillText(tile.count,pos.x+(size/2),pos.y+(size/2))
 }
 function runClick(tile, flag=false) {
-    console.log(tile)
+    outputClick({
+        pos:tile,
+        flag:flag,
+    })
+    /*
     var count = countNeighbours(tile)
 
     var tile = mainChunks.requestTile(tile.x,tile.y)
@@ -85,7 +89,7 @@ function runClick(tile, flag=false) {
         tile.uncovered = true
         tile.count = count
     }
-    
+    */
 }
 function countNeighbours(tilePos) {
     var tile = mainChunks.requestTile(tilePos.x,tilePos.y),
