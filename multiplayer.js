@@ -26,6 +26,6 @@ const socket = io("https://infms.xl83.dev", {
     })
 
     socket.on('chunkUpdate', function(data) {
-        recieveInput(data)
+        if (window.location.protocol != "file:")recieveInput(data)
     })
     

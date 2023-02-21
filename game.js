@@ -11,6 +11,8 @@ var mainChunks = new Chunks({
 })
 
 function renderLoop() {
+    canvas.width = window.innerWidth
+        canvas.height = window.innerHeight
     ctx.clearRect(0,0,canvas.width,canvas.height)
     drawGrid(camera.gridScale)
 
@@ -35,26 +37,34 @@ function drawGrid(size) {
     
         
     ctx.save()
+    ctx.translate(window.innerWidth/2,window.innerHeight/2)
+    ctx.scale(1/camera.zoom,1/camera.zoom)
+    //ctx.translate(-window.innerWidth*0.5*camera.zoom,-window.innerHeight*0.5*camera.zoom)
+    
     ctx.translate(camera.pos.x,camera.pos.y)
+    
 
 
     var gridSize = v(
-        Math.floor(window.innerWidth/size)+2,
-        Math.floor(window.innerHeight/size)+2
+        Math.floor((window.innerWidth*camera.zoom)/size)+4,
+        Math.floor((window.innerHeight*camera.zoom)/size)+4
     ),
-        cellSize = size
-        gridTranslation = v(),
+        cellSize = size,
         modScreen = v(
-            (Math.floor((camera.pos.x)/cellSize)*cellSize),
-            (Math.floor((camera.pos.y)/cellSize)*cellSize)
+            (Math.floor((
+                ((camera.pos.x)*1)-(0)
+                )/cellSize)*cellSize),
+            (Math.floor((
+                ((camera.pos.y)*1)-(0)
+                )/cellSize)*cellSize)
             ),
         mod = v(
             modScreen.x/cellSize,
             modScreen.y/cellSize,
         )
             var buffer = 2
-    for (let x = -buffer; x < gridSize.x+buffer; x++) {
-        for (let y = -buffer; y < gridSize.y+buffer; y++) {
+    for (let x = -buffer+Math.floor(-gridSize.x*0.5); x < (gridSize.x*0.5)+buffer; x++) {
+        for (let y = -buffer+Math.floor(-gridSize.y*0.5); y < (gridSize.y*0.5)+buffer; y++) {
             var pos = v(
                 x-mod.x,
                 y-mod.y,
@@ -98,8 +108,8 @@ function drawSquare(pos,x,y,size) {
         ctx.fillText(tile.count,pos.x+(size/2)+(-width/2),pos.y+(size/2))
     }
 }
-function runClick(tilePos, flag=false) {
-    if (true) {
+function runClick(tilePos, flag=false, tick=4) {
+    if (window.location.protocol != "file:") {
     outputClick({
         pos:tilePos,
         flag:flag,
@@ -120,9 +130,9 @@ function runClick(tilePos, flag=false) {
                 const nei = neis[i];
                 var neiTile = mainChunks.requestTile(nei.x, nei.y)
                 
-                if (!neiTile.uncovered) {
+                if (!neiTile.uncovered && tick>0) {
                     setTimeout(() => {
-                        runClick(nei)
+                        runClick(nei, false,tick-1)
 
                     }, 200);
                 }

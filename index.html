@@ -17,10 +17,14 @@
 </head>
 <body oncontextmenu="return false;">
     <canvas id="canvas"></canvas>
+    <div style="position:absolute;top:0%;left:0%;z-index: 100;">
+        <a href="https://github.com/aeolus-1/infinateMuliMinesweeper">Github - Do stuff here</a><br>
+    <img style="margin: 10px;" src="controls.png" alt="controls"></div>
     <script>
         var canvas = document.getElementById("canvas")
         canvas.width = window.innerWidth
         canvas.height = window.innerHeight
+        
 
         var ctx = canvas.getContext("2d")
     </script>
