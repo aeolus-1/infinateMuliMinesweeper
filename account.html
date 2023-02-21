@@ -26,8 +26,10 @@
 
       async function getBrowserId() {
           await biri().then(res => {
+            console.log(res)
             return res
           })
+          console.log(await biri())
       }
 </script>
 </html>
