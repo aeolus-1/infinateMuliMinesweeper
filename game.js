@@ -174,3 +174,16 @@ function countNeighbours(tilePos) {
     return count
 
 }
+
+
+function runLeaderboard(board) {
+    var div = document.getElementById("leaders")
+    div.innerHTML = ""
+    function appendText(text) {
+        div.appendChild(createElementFromHTML(`<div class="leaderboardSlot">${text}</div>`))
+    }
+    for (let i = 0; i < 40; i++) {
+        //var user = board[i]
+        appendText(`${(i+1)}. ${"name"}`)
+    }
+}
