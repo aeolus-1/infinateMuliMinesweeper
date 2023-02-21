@@ -8,9 +8,13 @@
 <body>
     <p>Pick username lol (you wont be able to change this for now but ill make a thing later)</p>
     <input id="username"/>
+    <button onclick="submit()">Submit</button>
 </body>
 <script>
       const socket = io("https://infms.xl83.dev/")
-      
+      function submit() {
+          var username = document.getElementById("username")
+          socket.send("account", username)
+      }
 </script>
 </html>
