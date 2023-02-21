@@ -25,9 +25,11 @@ function tileArray2d(e, t, n, r, c) {
 }
 
 
-function cTile(e, t, n = !0) {
+function cTile(e, t) {
     this.pos = v(e, t)
-    this.type = "grass"
+    this.mine = Math.random()>1-(1/10)
+    this.uncovered = false
+    this.flagged = false
 }
 function cChunk(e, t) {
 

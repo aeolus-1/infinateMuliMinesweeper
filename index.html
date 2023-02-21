@@ -12,8 +12,9 @@
     </style>
     <script src="common.js"></script>
      <script src="chunks.js"></script>
+     <script src="resurrect.js"></script>
 </head>
-<body>
+<body oncontextmenu="return false;">
     <canvas id="canvas"></canvas>
     <script>
         var canvas = document.getElementById("canvas")
@@ -21,6 +22,13 @@
         canvas.height = window.innerHeight
 
         var ctx = canvas.getContext("2d")
+    </script>
+    <script src="controls.js"></script>
+    <script src="game.js"></script>
+    <script>
+        setInterval(() => {
+            renderLoop()
+        }, 1000/60);
     </script>
 
 </body>
