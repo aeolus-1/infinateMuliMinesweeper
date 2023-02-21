@@ -1,6 +1,7 @@
 
 function recieveInput(chunkString) {
-    mainChunks = JSON.parse(chunkString)
+    var newChunks = JSON.parse(chunkString)
+    mainChunks.chunkMaps = newChunks.chunkMaps
 }
 function outputClick(data) {
     data = {
@@ -25,7 +26,6 @@ const socket = io("https://infms.xl83.dev", {
     })
 
     socket.on('chunkUpdate', function(data) {
-        console.log("got chunks", data)
         recieveInput(data)
     })
     
