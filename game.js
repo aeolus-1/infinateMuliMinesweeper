@@ -10,6 +10,8 @@ var mainChunks = new Chunks({
     height:100,
 })
 
+var mobile = false
+
 function renderLoop() {
     canvas.width = window.innerWidth
         canvas.height = window.innerHeight
@@ -96,7 +98,6 @@ function drawGrid(size) {
 }
 var renderQueue = []
 function drawQueue() {
-    console.log(renderQueue)
     for (let i = 0; i < renderQueue.length; i++) {
         const render = renderQueue[i];
         ctx.fillStyle = "#000"
@@ -151,6 +152,7 @@ function drawSquare(pos,x,y,size) {
     }
 }
 function runClick(tilePos, flag=false, tick=4) {
+    
 //    if (window.location.protocol != "file:") {
     outputClick({
         pos:tilePos,
