@@ -27,7 +27,7 @@ var touch = {
 }
 document.addEventListener("touchstart", ()=>{
     mobile = true
-    //touch.pos = undefined
+    
     touch.timer = (new Date()).getTime()
     
 })
@@ -51,7 +51,7 @@ document.addEventListener("touchmove", (e)=>{
 })
 document.addEventListener("touchend", ()=>{
     touch.lastTime = ((new Date()).getTime())-touch.timer
-    
+    touch.pos = undefined
 
 
     
