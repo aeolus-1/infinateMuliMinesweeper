@@ -16,8 +16,6 @@
       const socket = io("https://infms.xl83.dev/")
       async function submit() {
           var username = document.getElementById("username").value
-          var browserId = getBrowserId()
-          console.log(browserId)
           socket.emit("account", {
               "usename": username,
               "id": await biri()
