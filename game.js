@@ -164,9 +164,10 @@ function runClick(tilePos, flag=false, tick=4) {
     var tile = mainChunks.requestTile(tilePos.x,tilePos.y)
 
     if (tile.mine && !flag) alert("you are stupid lol")
-    if (flag && !tile.uncovered) {
+    if (flag) {
 
         tile.flagged = !tile.flagged
+        if (tile.uncovered) tile.flagged = false
 
         tile.flaggedBy = getName()
 
