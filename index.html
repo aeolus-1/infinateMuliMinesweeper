@@ -65,10 +65,23 @@
         
 
     </div>
-    <script>
-
+    <script>            
         var nameInput = document.getElementById("usernameInput")
+
+
+        var nameStorage = localStorage.getItem("username")
+        if (nameStorage != null) {
+            nameInput.value = nameStorage
+        } else {
+            nameInput.value = prompt("Username?")||names[randInt(0, names.length-1)].split(",")[0]
+            localStorage.setItem("username", getName())
+        }
+
         nameInput.placeholder = names[randInt(0, names.length-1)].split(",")[0]
+
+        nameInput.onchange = ()=>{
+            localStorage.setItem("username", getName())
+        }
 
         function getName() {
             return nameInput.value||nameInput.placeholder
