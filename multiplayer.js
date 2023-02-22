@@ -1,12 +1,16 @@
 
+
+
 function recieveInput(chunkString) {
-    var newChunks = JSON.parse(chunkString)
-    mainChunks.chunkMaps = newChunks.chunkMaps
+    var data = JSON.parse(chunkString)
+    mainChunks.chunkMaps = data.chunks.chunkMaps
+    runLeaderboard(data.leaderboard)
 }
 function outputClick(data) {
     data = {
         pos:v(),
         flag:false,
+        id:multiplayerId,
         name:"unamed",
         ...data,
     }

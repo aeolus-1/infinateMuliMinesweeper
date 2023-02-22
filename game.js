@@ -152,7 +152,7 @@ function drawSquare(pos,x,y,size) {
     }
 }
 function runClick(tilePos, flag=false, tick=4) {
-    if (touch.lastTime>200)flag = true
+    if (touch.lastTime>200&&mobile)flag = true
     
 //    if (window.location.protocol != "file:") {
     outputClick({
@@ -165,23 +165,20 @@ function runClick(tilePos, flag=false, tick=4) {
     var count = countNeighbours(tilePos)
 
     var tile = mainChunks.requestTile(tilePos.x,tilePos.y)
-
-    if (tile.mine && !flag) alert("you are stupid lol")
-    if (flag) {
-
-        tile.flagged = !tile.flagged
-        if (tile.uncovered) tile.flagged = false
-
-        tile.flaggedBy = getName()
-
-
-    } else {
-        console.log(tile)
-
-        tile.uncovered = true
-        tile.count = count
+    if (!tile.uncovered) {
+        if (flag) {
+            tile.flagged = !tile.flagged
+            tile.flaggedBy = getName()
+        } else if (!tile.flagged) {
+            tile.uncovered = true
+            tile.count = count
+            if (tile.mine && !flag)alert("you are stupid lol")
+        }
         
-    }
+    } else tile.flagged = false
+    
+
+    
 
 }
 function getNeighbours(tilePos) {
@@ -229,8 +226,8 @@ function runLeaderboard(board) {
     function appendText(text) {
         div.appendChild(createElementFromHTML(`<div class="leaderboardSlot">${text}</div>`))
     }
-    for (let i = 0; i < 40; i++) {
-        //var user = board[i]
-        appendText(`${(i+1)}. ${"name"}`)
+    for (let i = 0; i < board.length; i++) {
+        var user = board[i]
+        appendText(`${(i+1)}. ${user.name} (${user.score})`)
     }
 }
