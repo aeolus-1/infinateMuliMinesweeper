@@ -41,12 +41,21 @@
     </style>
         <script src="https://cdn.jsdelivr.net/npm/biri/dist/biri.min.js"></script>
 
-    <script type="module">
-            
-        window.multiplayerId = await biri()
-
-
-    </script>
+    
+    <script>
+        // Initialize the agent at application startup.
+        const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3')
+          .then(FingerprintJS => FingerprintJS.load())
+      
+        // Get the visitor identifier when you need it.
+        fpPromise
+          .then(fp => fp.get())
+          .then(result => {
+            // This is the visitor identifier:
+            window.multiplayerId = result.visitorId
+            console.log(visitorId)
+          })
+      </script>
     <script src="names.js"></script>
     <script src="common.js"></script>
      <script src="chunks.js"></script>
