@@ -161,8 +161,9 @@ function runClick(tilePos, flag=false, tick=4) {
         name:getName()
     })
 
-    
+    console.log(tilePos)
     var count = countNeighbours(tilePos)
+
 
     var tile = mainChunks.requestTile(tilePos.x,tilePos.y)
     if (!tile.uncovered) {
