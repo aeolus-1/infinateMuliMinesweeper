@@ -152,6 +152,7 @@ function drawSquare(pos,x,y,size) {
     }
 }
 function runClick(tilePos, flag=false, tick=4) {
+    if (touch.lastTime>200)flag = true
     
 //    if (window.location.protocol != "file:") {
     outputClick({
