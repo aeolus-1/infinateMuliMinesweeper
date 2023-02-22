@@ -16,6 +16,9 @@ function renderLoop() {
     ctx.clearRect(0,0,canvas.width,canvas.height)
     drawGrid(camera.gridScale)
 
+    
+    
+
    
 
     camera.pos = v(
@@ -85,10 +88,22 @@ function drawGrid(size) {
             
         }
     }
+    drawQueue()
 
     
     ctx.restore()
     
+}
+var renderQueue = []
+function drawQueue() {
+    console.log(renderQueue)
+    for (let i = 0; i < renderQueue.length; i++) {
+        const render = renderQueue[i];
+        ctx.fillStyle = "#000"
+        ctx.font = `bold ${20}px Calibri`
+        ctx.fillText(render.text,render.pos.x,render.pos.y)
+    }
+    renderQueue = []
 }
 function drawSquare(pos,x,y,size) {
     var tile = mainChunks.requestTile(x,y)
@@ -115,6 +130,24 @@ function drawSquare(pos,x,y,size) {
     if (tile.flagged) {
         var flagImg = document.getElementById("flagImg")
         ctx.drawImage(flagImg, pos.x,pos.y, size,size)
+        var screenPos = v(
+            (mouse.pos.x-camera.pos.x),
+            (mouse.pos.y-camera.pos.y)
+        ),
+        gridPos = v(
+            Math.floor((screenPos.x)/camera.gridScale),
+                Math.floor((screenPos.y)/camera.gridScale),
+        )
+        if (gridPos.x==x&&gridPos.y==y&&tile.flaggedBy!=undefined) {
+            renderQueue.push({
+                text:tile.flaggedBy,
+                pos:v(
+                    screenPos.x,
+                    screenPos.y
+                )
+            })
+        }
+        
     }
 }
 function runClick(tilePos, flag=false, tick=4) {
@@ -131,7 +164,7 @@ function runClick(tilePos, flag=false, tick=4) {
     var tile = mainChunks.requestTile(tilePos.x,tilePos.y)
 
     if (tile.mine && !flag) window.open("https://www.google.com/search?q=why+am+i+retared&rlz=1C5GCEM_enAU984AU984&oq=why+am+i+retared&aqs=chrome..69i57.3108j0j9&sourceid=chrome&ie=UTF-8&safe=active&ssui=on", target="_self")
-    if (flag) {
+    if (flag && !tile.uncovered) {
 
         tile.flagged = !tile.flagged
 
