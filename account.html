@@ -14,22 +14,15 @@
 <script src="socket.io.min.js"></script>
 <script>
       const socket = io("https://infms.xl83.dev/")
-      function submit() {
+      async function submit() {
           var username = document.getElementById("username").value
           var browserId = getBrowserId()
           console.log(browserId)
           socket.emit("account", {
               "usename": username,
-              "id": browserId
+              "id": await biri()
           })
       }
-
-      async function getBrowserId() {
-          await biri().then(res => {
-            console.log(res)
-            return res
-          })
-          console.log(await biri())
-      }
+    
 </script>
 </html>
