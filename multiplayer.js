@@ -7,6 +7,7 @@ function outputClick(data) {
     data = {
         pos:v(),
         flag:false,
+        name:"unamed",
         ...data,
     }
     console.log(data)

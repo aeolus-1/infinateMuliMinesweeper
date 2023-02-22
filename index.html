@@ -9,16 +9,19 @@
             margin: 0%;
             overflow: hidden;
         }
-        .leaderboard {
-            background-color: white;
-            width: 120px;
-            height:350px;
-            
+        .sideBar {
             position: absolute;
             z-index: 100;
             top: 0%;
             right: 0%;
             margin: 10px;
+        }
+        .leaderboard {
+            background-color: white;
+            width: 120px;
+            height:350px;
+            
+            
 
             border: solid 2px grey;
             border-radius: 10px;
@@ -31,7 +34,11 @@
             border-bottom: solid 3px black;
             padding: 4px;
         }
+        #usernameInput {
+            width:90%;
+        }
     </style>
+    <script src="names.js"></script>
     <script src="common.js"></script>
      <script src="chunks.js"></script>
      <script src="resurrect.js"></script>
@@ -46,14 +53,27 @@
     <div style="position:absolute;top:0%;left:0%;z-index: 100;">
         <a href="https://github.com/aeolus-1/infinateMuliMinesweeper">Github - Do stuff here</a><br>
     <img style="margin: 10px;" src="controls.png" alt="controls"></div>
-    <div id="leaderboard" class="leaderboard">
-        <div style="text-align: center; width:100%"><b>Leaderboard</b></div>
+    <div id="sideBar" class="sideBar">
+        <input id="usernameInput" type="text">
+        <hr>
+        <div id="leaderboard" class="leaderboard">
+            <div style="text-align: center; width:100%"><b>Leaderboard</b></div>
         <div id="leaders">
             COMING SOON
         </div>
+        </div>
+        
 
     </div>
     <script>
+
+        var nameInput = document.getElementById("usernameInput")
+        nameInput.placeholder = names[randInt(0, names.length-1)].split(",")[0]
+
+        function getName() {
+            return nameInput.value||nameInput.placeholder
+        }
+
         var canvas = document.getElementById("canvas")
         canvas.width = window.innerWidth
         canvas.height = window.innerHeight
