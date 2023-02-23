@@ -30,6 +30,11 @@ function renderLoop() {
 
     runControls()
 }
+var avalibleTiles = {},
+    viewPortTiles = {
+        min:v(),
+        max:v(),
+    }
 function drawGrid(size) {
     let grid = size
 
@@ -37,6 +42,15 @@ function drawGrid(size) {
         window.innerWidth*camera.zoom,
         window.innerHeight*camera.zoom
     )
+
+    function findTile(x,y) {
+        var aTile = avalibleTiles[`${x},${y}`]
+        if (aTile==undefined) {
+            return false
+        } else {
+            return aTile
+        }
+    }
 
 
     
@@ -48,7 +62,7 @@ function drawGrid(size) {
     
     ctx.translate(camera.pos.x,camera.pos.y)
     
-
+    var tilePoses = []
 
     var gridSize = v(
         Math.floor((window.innerWidth*camera.zoom)/size)+4,
@@ -75,8 +89,11 @@ function drawGrid(size) {
                 y-mod.y,
             ),
             screenPos =v(pos.x*cellSize,pos.y*cellSize)
-                
-            drawSquare(screenPos, pos.x, pos.y, cellSize)
+            
+            var tile= findTile(pos.x,pos.y)
+            if (tile) drawSquare(screenPos,tile, cellSize)
+            tilePoses.push(v(pos.x,pos.y))
+
             ctx.beginPath()
 
             ctx.moveTo(screenPos.x,screenPos.y+cellSize)
@@ -92,6 +109,20 @@ function drawGrid(size) {
     }
     drawQueue()
 
+    viewPortTiles = {
+        min:v(Infinity,Infinity),
+        max:v(-Infinity,-Infinity),
+    }
+
+    for (let i = 0; i < tilePoses.length; i++) {
+        const pos = tilePoses[i];
+        viewPortTiles.min.x = Math.min(pos.x, viewPortTiles.min.x)
+        viewPortTiles.max.x = Math.max(pos.x, viewPortTiles.max.x)
+        viewPortTiles.min.y = Math.min(pos.y, viewPortTiles.min.y)
+        viewPortTiles.max.y = Math.max(pos.y, viewPortTiles.max.y)
+    }
+
+
     
     ctx.restore()
     
@@ -106,9 +137,9 @@ function drawQueue() {
     }
     renderQueue = []
 }
-function drawSquare(pos,x,y,size) {
+function drawSquare(pos,tile,size) {
 
-    var tile = mainChunks.requestTile(x,y)
+    var tile = tile
 
     ctx.fillStyle = tile.uncovered?"#bbb":"#fff"
     ctx.fillRect(pos.x, pos.y, size,size)
@@ -140,7 +171,7 @@ function drawSquare(pos,x,y,size) {
             Math.floor((screenPos.x)/camera.gridScale),
                 Math.floor((screenPos.y)/camera.gridScale),
         )
-        if (gridPos.x==x&&gridPos.y==y&&tile.flaggedBy!=undefined) {
+        if (gridPos.x==tile.pos.x&&gridPos.y==tile.pos.y&&tile.flaggedBy!=undefined) {
             renderQueue.push({
                 text:tile.flaggedBy,
                 pos:v(
@@ -152,6 +183,7 @@ function drawSquare(pos,x,y,size) {
         
     }
 }
+
 function runClick(tilePos, flag=false, tick=4) {
     if (touch.lastTime>200&&mobile)flag = true
     
