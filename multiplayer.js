@@ -34,14 +34,24 @@ function outputClick(data) {
 }
 
 function makeChunkRequest() {
+    var chunkBounds = {
+        min:v(
+            Math.floor(viewPortTiles.min.x/mainChunks.options.columns),
+            Math.floor(viewPortTiles.min.y/mainChunks.options.rows)
+        ),
+        max:v(
+            Math.ceil(viewPortTiles.max.x/mainChunks.options.columns),
+            Math.ceil(viewPortTiles.max.y/mainChunks.options.rows)
+        ),
+    }
     var dim = v(
-        viewPortTiles.max.x-viewPortTiles.min.x,
-        viewPortTiles.max.y-viewPortTiles.min.y,
+        chunkBounds.max.x-chunkBounds.min.x,
+        chunkBounds.max.y-chunkBounds.min.y,
     ),
         buffer = 5
     socket.emit("requestingChunks", JSON.stringify({
-        x:viewPortTiles.min.x-buffer,
-        y:viewPortTiles.min.y-buffer,
+        x:chunkBounds.min.x-buffer,
+        y:chunkBounds.min.y-buffer,
         width:dim.x+buffer,
         height:dim.y+buffer,
     }))
