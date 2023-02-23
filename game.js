@@ -2,6 +2,7 @@ var camera = {
     pos:v(),
     target:v(),
     zoom:1,
+    targetZoom:1,
     gridScale:50,
 }
 
@@ -24,9 +25,10 @@ function renderLoop() {
    
 
     camera.pos = v(
-        camera.pos.x+((camera.target.x-camera.pos.x)*0.1),
-        camera.pos.y+((camera.target.y-camera.pos.y)*0.1),
+        camera.pos.x+((camera.target.x-camera.pos.x)*0.2),
+        camera.pos.y+((camera.target.y-camera.pos.y)*0.2),
     )
+    camera.zoom = camera.zoom + ((camera.targetZoom-camera.zoom)*0.3)
 
     runControls()
 }
