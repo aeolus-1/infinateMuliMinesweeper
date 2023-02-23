@@ -107,6 +107,7 @@ function drawQueue() {
     renderQueue = []
 }
 function drawSquare(pos,x,y,size) {
+
     var tile = mainChunks.requestTile(x,y)
 
     ctx.fillStyle = tile.uncovered?"#bbb":"#fff"
@@ -224,11 +225,11 @@ function countNeighbours(tilePos) {
 function runLeaderboard(board) {
     var div = document.getElementById("leaders")
     div.innerHTML = ""
-    function appendText(text) {
-        div.appendChild(createElementFromHTML(`<div class="leaderboardSlot">${text}</div>`))
+    function appendText(text,h=false) {
+        div.appendChild(createElementFromHTML(`<div class="${(h)?"highlighted ":""}leaderboardSlot">${text}</div>`))
     }
     for (let i = 0; i < board.length; i++) {
         var user = board[i]
-        appendText(`${(i+1)}. ${user.name} (${user.score})`)
+        appendText(`${(i+1)}. ${user.name} (${user.score})`,user.name == getName())
     }
 }
