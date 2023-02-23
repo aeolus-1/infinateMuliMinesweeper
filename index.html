@@ -90,7 +90,7 @@
         if (nameStorage != null) {
             nameInput.value = nameStorage
         } else {
-            nameInput.value = prompt("Username?")||names[randInt(0, names.length-1)].split(",")[0]
+            nameInput.value = names[randInt(0, names.length-1)].split(",")[0]
             localStorage.setItem("username", getName())
         }
 
