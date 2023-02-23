@@ -173,7 +173,7 @@ function drawSquare(pos,tile,size) {
             Math.floor((screenPos.x)/camera.gridScale),
                 Math.floor((screenPos.y)/camera.gridScale),
         )
-        if (gridPos.x==tile.pos.x&&gridPos.y==tile.pos.y&&tile.flaggedBy!=undefined) {
+        if (gridPos.x==(tile.pos.x*5)&&gridPos.y==(tile.pos.y*5)&&tile.flaggedBy!=undefined) {
             renderQueue.push({
                 text:tile.flaggedBy,
                 pos:v(

@@ -48,7 +48,7 @@ function makeChunkRequest() {
         chunkBounds.max.x-chunkBounds.min.x,
         chunkBounds.max.y-chunkBounds.min.y,
     ),
-        buffer = 0
+        buffer = 4
     socket.emit("requestingChunks", JSON.stringify({
         x:chunkBounds.min.x-buffer,
         y:chunkBounds.min.y-buffer,
