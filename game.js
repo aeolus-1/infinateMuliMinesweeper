@@ -2,6 +2,7 @@ var camera = {
     pos:v(),
     target:v(),
     zoom:1,
+    targetZoom:1,
     gridScale:50,
 }
 
@@ -10,21 +11,32 @@ var mainChunks = new Chunks({
     height:100,
 })
 
+var mobile = false
+
 function renderLoop() {
     canvas.width = window.innerWidth
         canvas.height = window.innerHeight
     ctx.clearRect(0,0,canvas.width,canvas.height)
     drawGrid(camera.gridScale)
 
+    
+    
+
    
 
     camera.pos = v(
-        camera.pos.x+((camera.target.x-camera.pos.x)*0.1),
-        camera.pos.y+((camera.target.y-camera.pos.y)*0.1),
+        camera.pos.x+((camera.target.x-camera.pos.x)*0.2),
+        camera.pos.y+((camera.target.y-camera.pos.y)*0.2),
     )
+    camera.zoom = camera.zoom + ((camera.targetZoom-camera.zoom)*0.3)
 
     runControls()
 }
+var avalibleTiles = {},
+    viewPortTiles = {
+        min:v(),
+        max:v(),
+    }
 function drawGrid(size) {
     let grid = size
 
@@ -32,6 +44,15 @@ function drawGrid(size) {
         window.innerWidth*camera.zoom,
         window.innerHeight*camera.zoom
     )
+
+    function findTile(x,y) {
+        var aTile = avalibleTiles[`${x},${y}`]
+        if (aTile==undefined) {
+            return false
+        } else {
+            return aTile
+        }
+    }
 
 
     
@@ -43,7 +64,7 @@ function drawGrid(size) {
     
     ctx.translate(camera.pos.x,camera.pos.y)
     
-
+    var tilePoses = []
 
     var gridSize = v(
         Math.floor((window.innerWidth*camera.zoom)/size)+4,
@@ -70,8 +91,11 @@ function drawGrid(size) {
                 y-mod.y,
             ),
             screenPos =v(pos.x*cellSize,pos.y*cellSize)
-                
-            drawSquare(screenPos, pos.x, pos.y, cellSize)
+            
+            var tile= findTile(pos.x,pos.y)
+            if (tile) drawSquare(screenPos,tile, cellSize)
+            tilePoses.push(v(pos.x,pos.y))
+
             ctx.beginPath()
 
             ctx.moveTo(screenPos.x,screenPos.y+cellSize)
@@ -85,13 +109,39 @@ function drawGrid(size) {
             
         }
     }
+    drawQueue()
+
+    viewPortTiles = {
+        min:v(Infinity,Infinity),
+        max:v(-Infinity,-Infinity),
+    }
+
+    for (let i = 0; i < tilePoses.length; i++) {
+        const pos = tilePoses[i];
+        viewPortTiles.min.x = Math.min(pos.x, viewPortTiles.min.x)
+        viewPortTiles.max.x = Math.max(pos.x, viewPortTiles.max.x)
+        viewPortTiles.min.y = Math.min(pos.y, viewPortTiles.min.y)
+        viewPortTiles.max.y = Math.max(pos.y, viewPortTiles.max.y)
+    }
+
 
     
     ctx.restore()
     
 }
-function drawSquare(pos,x,y,size) {
-    var tile = mainChunks.requestTile(x,y)
+var renderQueue = []
+function drawQueue() {
+    for (let i = 0; i < renderQueue.length; i++) {
+        const render = renderQueue[i];
+        ctx.fillStyle = "#000"
+        ctx.font = `bold ${20}px Calibri`
+        ctx.fillText(render.text,render.pos.x,render.pos.y)
+    }
+    renderQueue = []
+}
+function drawSquare(pos,tile,size) {
+
+    var tile = tile
 
     ctx.fillStyle = tile.uncovered?"#bbb":"#fff"
     ctx.fillRect(pos.x, pos.y, size,size)
@@ -115,27 +165,56 @@ function drawSquare(pos,x,y,size) {
     if (tile.flagged) {
         var flagImg = document.getElementById("flagImg")
         ctx.drawImage(flagImg, pos.x,pos.y, size,size)
+        var screenPos = v(
+            (mouse.pos.x-camera.pos.x),
+            (mouse.pos.y-camera.pos.y)
+        ),
+        gridPos = v(
+            Math.floor((screenPos.x)/camera.gridScale),
+                Math.floor((screenPos.y)/camera.gridScale),
+        )
+        if (gridPos.x==Math.floor(tile.pos.x*5)&&gridPos.y==Math.floor(tile.pos.y*5)&&tile.flaggedBy!=undefined) {
+            renderQueue.push({
+                text:tile.flaggedBy,
+                pos:v(
+                    screenPos.x,
+                    screenPos.y
+                )
+            })
+        }
+        
     }
 }
+
 function runClick(tilePos, flag=false, tick=4) {
+    if (touch.lastTime>200&&mobile)flag = true
+    
 //    if (window.location.protocol != "file:") {
     outputClick({
         pos:tilePos,
         flag:flag,
+        name:getName()
     })
 
-    
+    console.log(tilePos)
     var count = countNeighbours(tilePos)
 
+
     var tile = mainChunks.requestTile(tilePos.x,tilePos.y)
-    if (tile.mine && !flag) alert("you are stupid")
-    if (flag) {
-        tile.flagged = !tile.flagged
-    } else {
-        tile.uncovered = true
-        tile.count = count
+    if (!tile.uncovered) {
+        if (flag) {
+            tile.flagged = !tile.flagged
+            tile.flaggedBy = getName()
+        } else if (!tile.flagged) {
+            tile.uncovered = true
+            tile.count = count
+            if (tile.mine && !flag)alert("you are stupid lol")
+        }
         
-    }
+    } else tile.flagged = false
+    
+
+    
 
 }
 function getNeighbours(tilePos) {
@@ -180,11 +259,11 @@ function countNeighbours(tilePos) {
 function runLeaderboard(board) {
     var div = document.getElementById("leaders")
     div.innerHTML = ""
-    function appendText(text) {
-        div.appendChild(createElementFromHTML(`<div class="leaderboardSlot">${text}</div>`))
+    function appendText(text,h=false) {
+        div.appendChild(createElementFromHTML(`<div class="${(h)?"highlighted ":""}leaderboardSlot">${text}</div>`))
     }
-    for (let i = 0; i < 40; i++) {
-        //var user = board[i]
-        appendText(`${(i+1)}. ${"name"}`)
+    for (let i = 0; i < board.length; i++) {
+        var user = board[i]
+        appendText(`${(i+1)}. ${user.name} (${user.score})`,user.name == getName())
     }
 }

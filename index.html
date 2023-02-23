@@ -9,16 +9,21 @@
             margin: 0%;
             overflow: hidden;
         }
-        .leaderboard {
-            background-color: white;
-            width: 120px;
-            height:350px;
-            
+        .sideBar {
             position: absolute;
             z-index: 100;
             top: 0%;
             right: 0%;
-            margin: 10px;
+            margin: 20px;
+            margin-right: 60px;
+            width:10%;
+        }
+        .leaderboard {
+            background-color: white;
+            width: 100%;
+            height:350px;
+            
+            
 
             border: solid 2px grey;
             border-radius: 10px;
@@ -31,8 +36,29 @@
             border-bottom: solid 3px black;
             padding: 4px;
         }
+        #usernameInput {
+            width:90%;
+        }
+        .highlighted {
+            background-color: lightgreen;
+        }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/biri/dist/biri.min.js"></script>
+
+    
+    <script>
+        // Initialize the agent at application startup.
+        const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3')
+          .then(FingerprintJS => FingerprintJS.load())
+      
+        // Get the visitor identifier when you need it.
+        fpPromise
+          .then(fp => fp.get())
+          .then(result => {
+            // This is the visitor identifier:
+            window.multiplayerId = result.visitorId
+          })
+      </script>
+    <script src="names.js"></script>
     <script src="common.js"></script>
      <script src="chunks.js"></script>
      <script src="resurrect.js"></script>
@@ -47,14 +73,40 @@
     <div style="position:absolute;top:0%;left:0%;z-index: 100;">
         <a href="https://github.com/aeolus-1/infinateMuliMinesweeper">Github - Do stuff here</a><br>
     <img style="margin: 10px;" src="controls.png" alt="controls"></div>
-    <div id="leaderboard" class="leaderboard">
-        <div style="text-align: center; width:100%"><b>Leaderboard</b></div>
+    <div id="sideBar" class="sideBar">
+        <input id="usernameInput" type="text">
+        <hr>
+        <div id="leaderboard" class="leaderboard">
+            <div style="text-align: center; width:100%"><b>Leaderboard</b></div>
         <div id="leaders">
             COMING SOON
         </div>
+        </div>
+        
 
     </div>
-    <script>
+    <script>            
+        var nameInput = document.getElementById("usernameInput")
+
+
+        var nameStorage = localStorage.getItem("username")
+        if (nameStorage != null) {
+            nameInput.value = nameStorage
+        } else {
+            nameInput.value = names[randInt(0, names.length-1)].split(",")[0]
+            localStorage.setItem("username", getName())
+        }
+
+        nameInput.placeholder = names[randInt(0, names.length-1)].split(",")[0]
+
+        nameInput.onchange = ()=>{
+            localStorage.setItem("username", getName())
+        }
+
+        function getName() {
+            return nameInput.value||nameInput.placeholder
+        }
+
         var canvas = document.getElementById("canvas")
         canvas.width = window.innerWidth
         canvas.height = window.innerHeight
