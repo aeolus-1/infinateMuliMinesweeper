@@ -128,7 +128,7 @@ function runClick(tilePos, flag=false, tick=4) {
     var count = countNeighbours(tilePos)
 
     var tile = mainChunks.requestTile(tilePos.x,tilePos.y)
-    if (tile.mine && !flag) window.open("https://www.google.com/search?q=why+am+i+retared&rlz=1C5GCEM_enAU984AU984&oq=why+am+i+retared&aqs=chrome..69i57.3108j0j9&sourceid=chrome&ie=UTF-8&safe=active&ssui=on", target="_self")
+    if (tile.mine && !flag) alert("you are stupid")
     if (flag) {
         tile.flagged = !tile.flagged
     } else {
