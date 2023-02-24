@@ -33,6 +33,7 @@ function cTile(e, t) {
     this.uncovered = false
     this.flagged = false
     this.flaggedBy = null
+    this.loaded = true
     this.count = 0
 }
 function cChunk(e, t) {

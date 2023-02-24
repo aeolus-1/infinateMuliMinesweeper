@@ -1,11 +1,11 @@
 var mouse = {
     pos:v()
 }
-document.addEventListener("mousemove", (e)=>{
+canvas.addEventListener("mousemove", (e)=>{
     mouse.pos.x = (e.offsetX-(window.innerWidth/2))*camera.zoom
     mouse.pos.y = (e.offsetY-(window.innerHeight/2))*camera.zoom
 })
-document.addEventListener("mousedown", (e)=>{
+canvas.addEventListener("mousedown", (e)=>{
     mouse.pos.x = (e.offsetX-(window.innerWidth/2))*camera.zoom
     mouse.pos.y = (e.offsetY-(window.innerHeight/2))*camera.zoom
 
@@ -27,7 +27,7 @@ var touch = {
     lastTime:10000,
     
 }
-document.addEventListener("touchstart", (e)=>{
+canvas.addEventListener("touchstart", (e)=>{
     mobile = true
     
     touch.timer = (new Date()).getTime()

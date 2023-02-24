@@ -20,7 +20,7 @@ function renderLoop() {
     drawGrid(camera.gridScale)
 
     
-    
+    runShop()
 
    
 
@@ -95,6 +95,7 @@ function drawGrid(size) {
             var tile= findTile(pos.x,pos.y)
             if (tile) drawSquare(screenPos,tile, cellSize)
             tilePoses.push(v(pos.x,pos.y))
+            if (tile) {
 
             ctx.beginPath()
 
@@ -106,6 +107,7 @@ function drawGrid(size) {
             ctx.stroke()
 
             ctx.closePath()
+            }
             
         }
     }

@@ -39,8 +39,37 @@
         #usernameInput {
             width:90%;
         }
+        
+        
+        #flagSelection {
+            background-color: white;
+            width: 145px;
+            height:145px;
+            
+            
+
+            border: solid 2px grey;
+            border-radius: 10px;
+
+            padding: 20px;
+            overflow: scroll;
+
+        }
+        .flagSelectionBox {
+            width:145px;
+            height:145px;
+        }
+        .flagBox {
+            margin-left:30px;
+            width:85px;
+            height:85px;
+            box-shadow: none;
+
+
+        }
         .highlighted {
             background-color: lightgreen;
+            box-shadow: 2px 2px 2px 2px;
         }
     </style>
 
@@ -80,10 +109,46 @@
         <div id="leaders">
             Loading...
         </div>
+        <hr>
+    </div>
+    <script>
+        var selectedFlag = 1
+        function selectFlag(e) {
+            document.getElementById(selectedFlag).classList.remove("highlighted")
+            console.log("selected "+e.id)
+            selectedFlag = parseInt(e.id)
+            document.getElementById(selectedFlag).classList.add("highlighted")
+
+        }
+    </script>
+    <hr><b>Flag Selection</b>
+        <div id="flagSelection">
+            <div class="flagSelectionBox">
+                <img class="flagBox" id="1" onclick=selectFlag(this) src="flag.png" alt=""><br>
+                <button>Buy Flag</button><span>200 🪙</span>
+            </div>
+            <div class="flagSelectionBox">
+                <img class="flagBox" id="2" onclick=selectFlag(this) src="flag.png" alt=""><br>
+                <button>Buy Flag</button><span>200 🪙</span>
+            </div>
+            <div class="flagSelectionBox">
+                <img class="flagBox" id="3" onclick=selectFlag(this) src="flag.png" alt=""><br>
+                <button>Buy Flag</button><span>200 🪙</span>
+            </div>
+            <div class="flagSelectionBox">
+                <img class="flagBox" id="4" onclick=selectFlag(this) src="flag.png" alt=""><br>
+                <button>Buy Flag</button><span>200 🪙</span>
+            </div>
+
         </div>
+
+        
+        
+        
         
 
     </div>
+    
     <script>            
         var nameInput = document.getElementById("usernameInput")
 
@@ -115,6 +180,7 @@
     </script>
     <script src="multiplayer.js"></script>
     <script src="controls.js"></script>
+    <script src="shop.js"></script>
     <script src="game.js"></script>
     <script>
         function l() {

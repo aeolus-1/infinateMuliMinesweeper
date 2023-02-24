@@ -20,7 +20,7 @@ function recieveInput(chunkString) {
 
 
     
-    runLeaderboard(data.leaderboard)
+    //runLeaderboard(data.leaderboard)
 }
 function outputClick(data) {
     data = {
