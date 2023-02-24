@@ -44,24 +44,22 @@
         }
     </style>
 
-    
-<script>
-    // Initialize the agent at application startup.
-    const fpPromise = import('https://fpjscdn.net/v3/VnvPC0C5uO1vSIv09cfy')
-      .then(FingerprintJS => FingerprintJS.load({
-        region: "ap"
-      }))
-
-    // Get the visitor identifier when you need it.
-    fpPromise
-      .then(fp => fp.get())
-      .then(result => {
-        // This is the visitor identifier:
-        window.multiplayerId = result.visitorId
-      })
-  </script>
+<script src="common.js"></script>
+    <script>
+        let uidValue = getCookie("infms-uid")
+        console.log(uidValue)
+        if (uidValue == "") {
+            let uid = Math.random().toString(36).slice(2)
+            document.cookie = `infms-uid=${uid}; expires=Thu, 18 Dec 3000 12:00:00 UTC`;
+            window.multiplayerId = uid
+        } else {
+            console.log("found cookie")
+            window.multiplayerId = uidValue
+        }
+       
+      </script>
+>>>>>>> 5246fbc60686f36cda406ea1c72d2c0560c6b5c7
     <script src="names.js"></script>
-    <script src="common.js"></script>
      <script src="chunks.js"></script>
      <script src="resurrect.js"></script>
      <script src="socket.io.min.js"></script>
