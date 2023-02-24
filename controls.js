@@ -16,7 +16,8 @@ document.addEventListener("mousedown", (e)=>{
     runClick(v(
         Math.floor((screenPos.x)/camera.gridScale),
             Math.floor((screenPos.y)/camera.gridScale),
-    ),e.which==3)
+    ),e.which==3||e.shiftKey)
+    console.log(e)
     
 })
 var touch = {
