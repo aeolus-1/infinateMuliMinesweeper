@@ -187,6 +187,7 @@ function drawSquare(pos,tile,size) {
 }
 
 function runClick(tilePos, flag=false, tick=4) {
+    console.log(touch.lastTime)
     if (touch.lastTime>200&&mobile)flag = true
     
 //    if (window.location.protocol != "file:") {

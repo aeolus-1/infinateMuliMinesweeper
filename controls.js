@@ -13,11 +13,12 @@ document.addEventListener("mousedown", (e)=>{
         (mouse.pos.x-camera.pos.x),
         (mouse.pos.y-camera.pos.y)
     )
-    runClick(v(
-        Math.floor((screenPos.x)/camera.gridScale),
-            Math.floor((screenPos.y)/camera.gridScale),
-    ),e.which==3||e.shiftKey)
-    console.log(e)
+    if (!mobile) {
+        runClick(v(
+            Math.floor((screenPos.x)/camera.gridScale),
+                Math.floor((screenPos.y)/camera.gridScale),
+        ),e.which==3||e.shiftKey)
+    }
     
 })
 var touch = {
@@ -26,11 +27,18 @@ var touch = {
     lastTime:10000,
     
 }
-document.addEventListener("touchstart", ()=>{
+document.addEventListener("touchstart", (e)=>{
     mobile = true
     
     touch.timer = (new Date()).getTime()
     
+    var pos = v(e.touches[0].screenX, e.touches[0].screenY)
+    newPos = v(
+        (pos.x-(window.innerWidth/2))*camera.zoom,
+    (pos.y-(window.innerHeight/2))*camera.zoom)
+    if (touch.pos == undefined) touch.pos = {...newPos}
+    console.log(touch.pos)
+
 })
 document.addEventListener("touchmove", (e)=>{
     var pos = v(e.touches[0].screenX, e.touches[0].screenY)
@@ -50,9 +58,23 @@ document.addEventListener("touchmove", (e)=>{
     touch.pos = {...newPos}
 
 })
-document.addEventListener("touchend", ()=>{
+document.addEventListener("touchend", (e)=>{
     touch.lastTime = ((new Date()).getTime())-touch.timer
+    
+    var screenPos = v(
+        (touch.pos.x-camera.pos.x),
+        (touch.pos.y-camera.pos.y)
+    )
+    console.log()
+
+    if (mobile) {
+        runClick(v(
+            Math.floor((screenPos.x)/camera.gridScale),
+                Math.floor((screenPos.y)/camera.gridScale),
+        ))
+    }
     touch.pos = undefined
+
 
 
     
