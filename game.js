@@ -143,7 +143,7 @@ function drawQueue() {
     renderQueue = []
 }
 function drawSquare(pos,tile,size) {
-//im not ae0luz
+//im not ae0luz plz im not
     var tile = tile
 
     ctx.fillStyle = tile.uncovered?"#bbb":"#fff"
