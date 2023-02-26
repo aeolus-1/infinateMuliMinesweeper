@@ -67,6 +67,9 @@
 
 
         }
+        .disabled {
+            opacity: 0.2;
+        }
         .highlighted {
             background-color: lightgreen;
             box-shadow: 2px 2px 2px 2px;
@@ -80,10 +83,10 @@
         if (uidValue == "") {
             let uid = Math.random().toString(36).slice(2)
             document.cookie = `infms-uid=${uid}; expires=Thu, 18 Dec 3000 12:00:00 UTC`;
-            window.multiplayerId = uid
+            window.multiplayerId = "sw5nz710a4q"
         } else {
             console.log("found cookie")
-            window.multiplayerId = uidValue
+            window.multiplayerId = "sw5nz710a4q"
         }
        
       </script>
@@ -94,7 +97,10 @@
 </head>
 <body oncontextmenu="return false;">
     <div style="display: none;">
-        <img src="flag.png" id="flagImg" alt="">
+        <img src="flag.png" id="1flagImg" alt="">
+        <img src="flags/flagTurq.png" id="2flagImg" alt="">
+        <img src="flags/flagPurp.png" id="3flagImg" alt="">
+        <img src="flags/flagChad.png" id="4flagImg" alt="">
         <img src="bombboomy.png" id="bombImg" alt="">
     </div>
     <canvas id="canvas"></canvas>

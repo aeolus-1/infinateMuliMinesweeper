@@ -21,6 +21,7 @@ function renderLoop() {
 
     
     runShop()
+    runLeaderboard()
 
    
 
@@ -165,7 +166,9 @@ function drawSquare(pos,tile,size) {
         ctx.drawImage(flagImg, pos.x,pos.y, size,size)
     }
     if (tile.flagged) {
-        var flagImg = document.getElementById("flagImg")
+        var account = accountData[multiplayerId],
+            selection = account.flagSelection||1,
+            flagImg = document.getElementById(`${selection}flagImg`)
         ctx.drawImage(flagImg, pos.x,pos.y, size,size)
         var screenPos = v(
             (mouse.pos.x-camera.pos.x),
@@ -259,7 +262,27 @@ function countNeighbours(tilePos) {
 }
 
 
-function runLeaderboard(board) {
+function runLeaderboard() {
+    function getLeaderboard() {
+        /*
+            //=========placeholder==========
+            let accountData = {
+                "43":{name:"yya1",score:43},
+                "4sd3":{name:"yippee",score:43},
+                "4fd3":{name:"ysfv1",score:2},
+                "423":{name:"yfds",score:7},
+                "3":{name:"ywd1",score:69},
+                "44333":{name:"yya21",score:420},
+            }
+            //=============================
+        */
+            let players =  ((Object.keys(accountData)).map((e)=>{return accountData[e]})).filter(a=>{return a.score>1})
+            return players.sort((a,b)=>{return -Math.sign(a.score-b.score)})
+        
+            
+        }
+
+    var board = getLeaderboard()
     var div = document.getElementById("leaders")
     div.innerHTML = ""
     function appendText(text,h=false) {
