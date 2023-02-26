@@ -23,6 +23,8 @@ function renderLoop() {
     runShop()
     runLeaderboard()
 
+    document.getElementById('coinCount').textContent = (accountData[multiplayerId]||{coins:0}).coins
+
    
 
     camera.pos = v(
@@ -143,7 +145,6 @@ function drawQueue() {
     renderQueue = []
 }
 function drawSquare(pos,tile,size) {
-//im not ae0luz plz im not
     var tile = tile
 
     ctx.fillStyle = tile.uncovered?"#bbb":"#fff"
@@ -166,7 +167,7 @@ function drawSquare(pos,tile,size) {
         ctx.drawImage(flagImg, pos.x,pos.y, size,size)
     }
     if (tile.flagged) {
-        var account = accountData[multiplayerId],
+        var account = accountData[multiplayerId]||{},
             selection = account.flagSelection||1,
             flagImg = document.getElementById(`${selection}flagImg`)
         ctx.drawImage(flagImg, pos.x,pos.y, size,size)

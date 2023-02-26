@@ -47,8 +47,28 @@ function runShop() {
             owns = ownData[selection]
         
             box.disabled = !owns
+            
+            
             box.style["pointer-events"] = (!owns)?"none":""
-            box.classList.remove("disabled")
-            if (!owns) box.classList.add("disabled")
+            box.children[0].classList.remove("disabled")
+            if (!owns) {
+                box.children[0].classList.add("disabled")
+                box.children[3].textContent = `${shopData.flags[box.children[0].id].cost} 🪙`
+                
+            } else {
+                box.children[2].textContent = "Bought"
+                box.children[3].textContent = ``
+            }
+    }
+}
+
+function buyFlag(e) {
+    var selection = e.previousElementSibling.previousElementSibling.id
+    if (!accountData[multiplayerId].owns[selection]) {
+        socket.emit("buyFlag", JSON.stringify({
+            id:multiplayerId,
+            buySelection:selection
+        }))
+        console.log("sent request to buy")
     }
 }

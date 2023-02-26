@@ -20,6 +20,7 @@ function recieveInput(chunkString) {
 
 
     accountData = data.leaderboard
+    
     //runLeaderboard(data.leaderboard)
 }
 function outputClick(data) {

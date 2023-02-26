@@ -74,6 +74,10 @@
             background-color: lightgreen;
             box-shadow: 2px 2px 2px 2px;
         }
+        button {
+            pointer-events:all;
+            opacity: 1;
+        }
     </style>
 
 <script src="common.js"></script>
@@ -83,11 +87,12 @@
         if (uidValue == "") {
             let uid = Math.random().toString(36).slice(2)
             document.cookie = `infms-uid=${uid}; expires=Thu, 18 Dec 3000 12:00:00 UTC`;
-            window.multiplayerId = "sw5nz710a4q"
+            window.multiplayerId = uid
         } else {
             console.log("found cookie")
-            window.multiplayerId = "sw5nz710a4q"
+            window.multiplayerId = uidValue
         }
+        if (location.protocol=="file:") window.multiplayerId = "reefDebug"
        
       </script>
     <script src="names.js"></script>
@@ -128,22 +133,23 @@
         }
     </script>
     <hr><b>Flag Selection</b>
+    <span>🪙: <span id="coinCount">000</span></span>
         <div id="flagSelection">
             <div class="flagSelectionBox">
                 <img class="flagBox" id="1" onclick=selectFlag(this) src="flag.png" alt=""><br>
-                <button>Buy Flag</button><span>200 🪙</span>
+                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
             </div>
             <div class="flagSelectionBox">
-                <img class="flagBox" id="2" onclick=selectFlag(this) src="flag.png" alt=""><br>
-                <button>Buy Flag</button><span>200 🪙</span>
+                <img class="flagBox" id="2" onclick=selectFlag(this) src="flags/flagTurq.png" alt=""><br>
+                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
             </div>
             <div class="flagSelectionBox">
-                <img class="flagBox" id="3" onclick=selectFlag(this) src="flag.png" alt=""><br>
-                <button>Buy Flag</button><span>200 🪙</span>
+                <img class="flagBox" id="3" onclick=selectFlag(this) src="flags/flagOrange.png" alt=""><br>
+                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
             </div>
             <div class="flagSelectionBox">
-                <img class="flagBox" id="4" onclick=selectFlag(this) src="flag.png" alt=""><br>
-                <button>Buy Flag</button><span>200 🪙</span>
+                <img class="flagBox" id="4" onclick=selectFlag(this) src="flags/flagChad.png" alt=""><br>
+                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
             </div>
 
         </div>
