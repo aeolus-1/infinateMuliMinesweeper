@@ -68,7 +68,7 @@
 
         }
         .disabled {
-            opacity: 0.2;
+            opacity: 0.3;
         }
         .highlighted {
             background-color: lightgreen;
@@ -129,6 +129,10 @@
             console.log("selected "+e.id)
             selectedFlag = parseInt(e.id)
             document.getElementById(selectedFlag).classList.add("highlighted")
+            socket.emit("setFlagselection", JSON.stringify({
+                id:multiplayerId,
+                selection:selectedFlag,
+            }))
 
         }
     </script>
@@ -151,6 +155,31 @@
                 <img class="flagBox" id="4" onclick=selectFlag(this) src="flags/flagChad.png" alt=""><br>
                 <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
             </div>
+            <div class="flagSelectionBox">
+                <img class="flagBox" id="5" onclick=selectFlag(this) src="flags/flagNetherlands.png" alt=""><br>
+                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
+            </div>
+            <div class="flagSelectionBox">
+                <img class="flagBox" id="6" onclick=selectFlag(this) src="flags/flagHicks.png" alt=""><br>
+                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
+            </div>
+            <div class="flagSelectionBox">
+                <img class="flagBox" id="7" onclick=selectFlag(this) src="flags/flagNerd.png" alt=""><br>
+                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
+            </div>
+            <div class="flagSelectionBox">
+                <img class="flagBox" id="8" onclick=selectFlag(this) src="flags/flagGarlic.png" alt=""><br>
+                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
+            </div>
+            <div class="flagSelectionBox">
+                <img class="flagBox" id="9" onclick=selectFlag(this) src="flags/flagRain.png" alt=""><br>
+                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
+            </div>
+            <div class="flagSelectionBox">
+                <img class="flagBox" id="10" onclick=selectFlag(this) src="flags/flagFemboy.png" alt=""><br>
+                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
+            </div>
+
 
         </div>
 

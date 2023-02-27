@@ -20,6 +20,11 @@ function recieveInput(chunkString) {
 
 
     accountData = data.leaderboard
+
+    if (accountData[multiplayerId]) {
+        window.ownData = accountData[multiplayerId].owns
+        console.log(window.ownData)
+    }
     
     //runLeaderboard(data.leaderboard)
 }
@@ -74,5 +79,8 @@ const socket = io("https://infms.xl83.dev", {
     
     socket.on('returningChunks', function(data) {
         recieveInput(data)
+    })
+    socket.on('recieveItem', function(data) {
+        recieveItem(JSON.parse(data))
     })
     

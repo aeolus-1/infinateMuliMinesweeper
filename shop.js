@@ -5,24 +5,95 @@ var shopData = {
         1:{
             bought:true,
             name:"Defualt",
+            rarity:"common",
             cost:0,
             src:"flag.png",
         },
         2:{
             name:"Purple",
-            cost:200,
+            rarity:"common",
+            cost:35,
             src:"./flags/purp.png",
         },
         3:{
             name:"Orange",
-            cost:200,
+            rarity:"common",
+            cost:35,
             src:"./flags/orange.png",
         },
         4:{
-            name:"Ukraine",
-            cost:500,
-            src:"./flags/ukraine.png",
+            name:"Chad",
+            rarity:"common",
+            cost:50,
+            src:"./flags/flagChag.png",
         },
+        5:{
+            name:"Netherlands",
+            rarity:"common",
+            cost:50,
+            src:"./flags/flagNetherlands.png",
+        },
+        6:{
+            name:"Hick's Hexagons",
+            rarity:"common",
+            cost:60,
+            src:"./flags/flagHicks.png",
+        },
+        7:{
+            name:"Nerd",
+            rarity:"common",
+            cost:80,
+            src:"./flags/flagNerd.png",
+        },
+        8:{
+            name:"Garlic",
+            rarity:"common",
+            cost:100,
+            src:"./flags/flagGarlic.png",
+        },
+        9:{
+            name:"RainWorld",
+            rarity:"common",
+            cost:100,
+            src:"./flags/flagRain.png",
+        },
+        10:{
+            name:"Femboy",
+            rarity:"common",
+            cost:250,
+            src:"./flags/flagFemboy.png",
+        },
+        11:{
+            name:"Femboy",
+            rarity:"rare",
+            cost:250,
+            src:"./flags/flagFemboy.png",
+        },
+        12:{
+            name:"Femboy",
+            rarity:"rare",
+            cost:250,
+            src:"./flags/flagFemboy.png",
+        },
+        13:{
+            name:"Femboy",
+            rarity:"rare",
+            cost:250,
+            src:"./flags/flagFemboy.png",
+        },
+        14:{
+            name:"Femboy",
+            rarity:"rare",
+            cost:250,
+            src:"./flags/flagFemboy.png",
+        },
+        15:{
+            name:"Femboy",
+            rarity:"rare",
+            cost:250,
+            src:"./flags/flagFemboy.png",
+        },
+
     }
 },
     ownData = {
@@ -32,7 +103,7 @@ var shopData = {
 function findPlayerData() {
     var playerAccount = accountData[multiplayerId]
     if (playerAccount!=undefined) {
-        ownData = playerAccount.ownData||{
+        ownData = playerAccount.owns||{
             1:true,
         }
     }
@@ -41,10 +112,11 @@ function findPlayerData() {
 function runShop() {
     findPlayerData()
     var boxes = document.getElementsByClassName("flagSelectionBox")
+    console.log("yya")
     for (let i = 0; i < boxes.length; i++) {
         const box = boxes[i];
         var selection = parseInt(box.children[0].id),
-            owns = ownData[selection]
+            owns = window.ownData[selection]
         
             box.disabled = !owns
             
@@ -64,7 +136,9 @@ function runShop() {
 
 function buyFlag(e) {
     var selection = e.previousElementSibling.previousElementSibling.id
+    console.log(selection)
     if (!accountData[multiplayerId].owns[selection]) {
+        console.log("yay")
         socket.emit("buyFlag", JSON.stringify({
             id:multiplayerId,
             buySelection:selection
@@ -72,3 +146,10 @@ function buyFlag(e) {
         console.log("sent request to buy")
     }
 }
+
+function recieveItem(d) {
+    alert("The loot box contained a "+d.name)
+}
+
+
+

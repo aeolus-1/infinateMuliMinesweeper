@@ -161,14 +161,23 @@ function drawSquare(pos,tile,size) {
             width = ctx.measureText(text).width
         
         ctx.fillText(tile.count,pos.x+(size/2)+(-width/2),pos.y+(size/2))
+        if (tile.lootBox) {
+            var fontSize = 40
+                ctx.font = `bold ${fontSize}px Calibri`
+                ctx.textBaseline = "middle"
+                var text = "🎁",//tile.count==0?"":tile.count,
+                    width = ctx.measureText(text).width
+                
+                ctx.fillText("🎁",pos.x+(size/2)+(-width/2),pos.y+(size/2))
+        }  
     }
     if (tile.uncovered && tile.mine) {
         var flagImg = document.getElementById("bombImg")
         ctx.drawImage(flagImg, pos.x,pos.y, size,size)
     }
     if (tile.flagged) {
-        var account = accountData[multiplayerId]||{},
-            selection = account.flagSelection||1,
+        var account = accountData[tile.flaggedById]||{},
+            selection = account.selectedFlag||1,
             flagImg = document.getElementById(`${selection}flagImg`)
         ctx.drawImage(flagImg, pos.x,pos.y, size,size)
         var screenPos = v(
@@ -190,6 +199,7 @@ function drawSquare(pos,tile,size) {
         }
         
     }
+      
 }
 
 function runClick(tilePos, flag=false, tick=4) {
@@ -219,6 +229,7 @@ function runClick(tilePos, flag=false, tick=4) {
         }
         
     } else tile.flagged = false
+
     
 
     
