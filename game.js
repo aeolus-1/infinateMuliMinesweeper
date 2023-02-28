@@ -161,6 +161,16 @@ function drawSquare(pos,tile,size) {
             width = ctx.measureText(text).width
         
         ctx.fillText(tile.count,pos.x+(size/2)+(-width/2),pos.y+(size/2))
+
+        if (tile.lootBox) {
+            var fontSize = 40
+                ctx.font = `bold ${fontSize}px Calibri`
+                ctx.textBaseline = "middle"
+                var text = "🎁",//tile.count==0?"":tile.count,
+                    width = ctx.measureText(text).width
+                
+                ctx.fillText("🎁",pos.x+(size/2)+(-width/2),pos.y+(size/2))
+        }  
         
     }
     if (tile.uncovered && tile.mine) {
@@ -191,15 +201,7 @@ function drawSquare(pos,tile,size) {
         }
         
     }
-    if (tile.lootBox) {
-        var fontSize = 40
-            ctx.font = `bold ${fontSize}px Calibri`
-            ctx.textBaseline = "middle"
-            var text = "🎁",//tile.count==0?"":tile.count,
-                width = ctx.measureText(text).width
-            
-            ctx.fillText("🎁",pos.x+(size/2)+(-width/2),pos.y+(size/2))
-    }  
+    
       
 }
 
