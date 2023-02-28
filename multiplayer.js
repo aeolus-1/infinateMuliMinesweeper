@@ -23,7 +23,6 @@ function recieveInput(chunkString) {
 
     if (accountData[multiplayerId]) {
         window.ownData = accountData[multiplayerId].owns
-        console.log(window.ownData)
     }
     
     //runLeaderboard(data.leaderboard)
@@ -82,5 +81,15 @@ const socket = io("https://infms.xl83.dev", {
     })
     socket.on('recieveItem', function(data) {
         recieveItem(JSON.parse(data))
+    })
+    socket.on("openedLootbox", function(data) {
+        data = JSON.parse(data)
+        console.log(data)
+        if (typeof data.item == "string") {
+            alert("You got 30 coins")
+
+        } else {
+            recieveItem(data.item)
+        }
     })
     

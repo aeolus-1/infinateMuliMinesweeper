@@ -64,34 +64,40 @@ var shopData = {
             src:"./flags/flagFemboy.png",
         },
         11:{
-            name:"Femboy",
+            name:"Coc",
             rarity:"rare",
             cost:250,
-            src:"./flags/flagFemboy.png",
+            src:"./flags/flagCoc.png",
         },
         12:{
-            name:"Femboy",
+            name:"Men",
             rarity:"rare",
             cost:250,
-            src:"./flags/flagFemboy.png",
+            src:"./flags/flagMen.png",
         },
         13:{
-            name:"Femboy",
+            name:"Furry Pride Flag",
             rarity:"rare",
             cost:250,
-            src:"./flags/flagFemboy.png",
+            src:"./flags/flagFurry.png",
         },
         14:{
-            name:"Femboy",
+            name:"Bleh Cat 1",
             rarity:"rare",
-            cost:250,
-            src:"./flags/flagFemboy.png",
+            cost:1000,
+            src:"./flags/flagBleh.png",
         },
         15:{
-            name:"Femboy",
+            name:"Bleh Cat 2",
             rarity:"rare",
-            cost:250,
-            src:"./flags/flagFemboy.png",
+            cost:1000,
+            src:"./flags/flagBleh1.png",
+        },
+        16:{
+            name:"Bleh Cat 3",
+            rarity:"rare",
+            cost:1000,
+            src:"./flags/flagBleh1.png",
         },
 
     }
@@ -112,13 +118,14 @@ function findPlayerData() {
 function runShop() {
     findPlayerData()
     var boxes = document.getElementsByClassName("flagSelectionBox")
-    console.log("yya")
     for (let i = 0; i < boxes.length; i++) {
         const box = boxes[i];
         var selection = parseInt(box.children[0].id),
             owns = window.ownData[selection]
         
             box.disabled = !owns
+
+            
             
             
             box.style["pointer-events"] = (!owns)?"none":""
@@ -128,7 +135,9 @@ function runShop() {
                 box.children[3].textContent = `${shopData.flags[box.children[0].id].cost} 🪙`
                 
             } else {
-                box.children[2].textContent = "Bought"
+                box.style["pointer-events"] = (shopData.flags[selection].rarity=="rare")?"none":""
+
+                box.children[2].textContent = (shopData.flags[selection].rarity=="rare")?"Found in lootboxes":"Bought"
                 box.children[3].textContent = ``
             }
     }
@@ -150,6 +159,5 @@ function buyFlag(e) {
 function recieveItem(d) {
     alert("The loot box contained a "+d.name)
 }
-
 
 
