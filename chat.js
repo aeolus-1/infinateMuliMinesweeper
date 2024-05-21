@@ -37,7 +37,7 @@ chatSubmitButton.onclick = ()=>{
     document.getElementById("chatSubmit").value = ""
     submitMsg(msg, currentUsername)
 }
-chatSubmit.addEventListener("keydown",(e)=>{
+chatSubmit.addEventListener("keyup",(e)=>{
     if (e.key=="Enter"){
         chatSubmitButton.click()
     }
