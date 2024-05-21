@@ -58,42 +58,30 @@ var shopData = {
             src:"./flags/flagRain.png",
         },
         10:{
-            name:"Femboy",
-            rarity:"common",
-            cost:250,
-            src:"./flags/flagFemboy.png",
-        },
-        11:{
             name:"Coc",
             rarity:"rare",
             cost:250,
             src:"./flags/flagCoc.png",
         },
-        12:{
+        11:{
             name:"Men",
             rarity:"rare",
             cost:250,
             src:"./flags/flagMen.png",
         },
-        13:{
-            name:"Furry Pride Flag",
-            rarity:"rare",
-            cost:250,
-            src:"./flags/flagFurry.png",
-        },
-        14:{
+        12:{
             name:"Bleh Cat 1",
             rarity:"rare",
             cost:1000,
             src:"./flags/flagBleh.png",
         },
-        15:{
+        13:{
             name:"Bleh Cat 2",
             rarity:"rare",
             cost:1000,
             src:"./flags/flagBleh1.png",
         },
-        16:{
+        14:{
             name:"Bleh Cat 3",
             rarity:"rare",
             cost:1000,
