@@ -106,6 +106,7 @@ function findPlayerData() {
 function runShop() {
     findPlayerData()
     var boxes = document.getElementsByClassName("flagSelectionBox")
+    console.log(boxes)
     for (let i = 0; i < boxes.length; i++) {
         const box = boxes[i];
         var selection = parseInt(box.children[0].id),
@@ -115,7 +116,7 @@ function runShop() {
 
             
             
-            
+            console.log(box)
             box.style["pointer-events"] = (!owns)?"none":""
             box.children[0].classList.remove("disabled")
             if (!owns) {
