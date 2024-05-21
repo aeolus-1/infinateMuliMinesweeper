@@ -86,10 +86,11 @@ document.addEventListener("keyup", (e)=>{keys[e.key.toLowerCase()]=false})
 
 function runControls() {
     var speed = 20*camera.zoom
-    if (keys.w||keys.ArrowUp) camera.target.y -= -speed
-    if (keys.s||keys.ArrowDown) camera.target.y += -speed
-    if (keys.a||keys.ArrowLeft) camera.target.x -= -speed
-    if (keys.d||keys.ArrowRight) camera.target.x += -speed
+    console.log(keys)
+    if (keys.w||keys.arrowup) camera.target.y -= -speed
+    if (keys.s||keys.arrowdown) camera.target.y += -speed
+    if (keys.a||keys.arrowleft) camera.target.x -= -speed
+    if (keys.d||keys.arrowright) camera.target.x += -speed
 
     function add(num) {camera.targetZoom = clamp(camera.targetZoom+num,0.25, 2)}
 
