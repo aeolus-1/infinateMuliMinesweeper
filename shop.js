@@ -120,6 +120,7 @@ function runShop() {
             box.children[0].classList.remove("disabled")
             if (!owns) {
                 box.children[0].classList.add("disabled")
+                console.log(box.children[0].id)
                 box.children[3].textContent = `${shopData.flags[box.children[0].id].cost} 🪙`
                 
             } else {
