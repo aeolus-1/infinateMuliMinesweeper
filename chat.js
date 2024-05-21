@@ -19,11 +19,8 @@ function appendMsgToChat(msg, user) {
 function submitMsg(msg,user) {
     console.log("emiting new msg - ", `[${user}] ${msg}`)
     
-    socket.emit("submitChat", JSON.stringify({
-        timestamp:(new Date()).getTime(),
-        user:user,
-        msg:msg,
-    }))
+   socket.emit("sendChat", {"user": user, "msg": msg})
+    
     
     return 0
 }
@@ -40,7 +37,7 @@ chatSubmitButton.onclick = ()=>{
     document.getElementById("chatSubmit").value = ""
     submitMsg(msg, currentUsername)
 }
-chatSubmit.addEventListener("keydown",(e)=>{
+chatSubmit.addEventListener("keyup",(e)=>{
     if (e.key=="Enter"){
         chatSubmitButton.click()
     }

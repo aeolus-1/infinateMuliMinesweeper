@@ -90,6 +90,12 @@ const socket = io("https://infms.xl83.dev", {
     socket.on('recieveItem', function(data) {
         recieveItem(JSON.parse(data))
     })
+
+
+      socket.on('recChat', function(data) {
+      appendMsgToChat(data.msg, data.user)
+    })
+
     socket.on("openedLootbox", function(data) {
         data = JSON.parse(data)
         console.log(data)
