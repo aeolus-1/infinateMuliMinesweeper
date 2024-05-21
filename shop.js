@@ -106,7 +106,6 @@ function findPlayerData() {
 function runShop() {
     findPlayerData()
     var boxes = document.getElementsByClassName("flagSelectionBox")
-    console.log(boxes)
     for (let i = 0; i < boxes.length; i++) {
         const box = boxes[i];
         var selection = parseInt(box.children[0].id),
@@ -116,12 +115,10 @@ function runShop() {
 
             
             
-            console.log(box)
             box.style["pointer-events"] = (!owns)?"none":""
             box.children[0].classList.remove("disabled")
             if (!owns) {
                 box.children[0].classList.add("disabled")
-                console.log(box.children[0].id)
                 box.children[3].textContent = `${shopData.flags[box.children[0].id].cost} 🪙`
                 
             } else {
