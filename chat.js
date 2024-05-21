@@ -13,6 +13,8 @@ function appendMsgToChat(msg, user) {
 
   chatContainer.appendChild(msgBox)
 
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+
 }
 
 
