@@ -100,6 +100,10 @@
         position: absolute;
         bottom: 30px;
       }
+      #chatContainer {
+        max-height: 300px;
+        overflow-y: scroll;
+      }
     </style>
 
     <script src="common.js"></script>
@@ -239,9 +243,7 @@
     <div id="chatBox">
         
         <h2>Chat</h2>
-        <label for="chatUsername">Username: </label>
-      <input id="chatUsername" name="chatUsername" type="text" value="unnamed" style="width: 90px;"/>
-      <hr>
+        
       
       <div class="chat">
         <div class="chatInnerWrapper">

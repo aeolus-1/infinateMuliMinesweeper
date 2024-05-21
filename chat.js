@@ -31,7 +31,7 @@ chatSubmitButton = document.getElementById("chatSubmitButton")
 
 
 chatSubmitButton.onclick = ()=>{
-    let currentUsername = document.getElementById("chatUsername").value,
+    let currentUsername = document.getElementById("usernameInput").value,
         msg = chatSubmit.value
 
     document.getElementById("chatSubmit").value = ""
