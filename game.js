@@ -19,6 +19,13 @@ function renderLoop() {
     ctx.clearRect(0,0,canvas.width,canvas.height)
     drawGrid(camera.gridScale)
 
+
+    let viewportSize = window.innerWidth*camera.zoom
+    if (Math.abs(positionOfLastViewport.x-camera.pos.x)>viewportSize*0.75 || zoomOfLastViewport-camera.zoom<-0.5) {
+        console.log("made req")
+        makeChunkRequest()
+    }
+
     
     runShop()
     runLeaderboard()

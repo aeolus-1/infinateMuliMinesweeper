@@ -38,6 +38,9 @@ function outputClick(data) {
     socket.emit("makeClick", JSON.stringify(data))
 }
 
+var positionOfLastViewport = v(),
+    zoomOfLastViewport = 1
+
 function getViewport() {
     var chunkBounds = {
         min:v(
@@ -57,12 +60,15 @@ function getViewport() {
     return {
         x:chunkBounds.min.x-buffer,
         y:chunkBounds.min.y-buffer,
-        width:dim.x+buffer,
-        height:dim.y+buffer,
+        width:dim.x+(3*buffer),
+        height:dim.y+(2*buffer),
     }
 }
 function makeChunkRequest() {
-    socket.emit("requestingChunks", JSON.stringify({viewport:getViewport()}))
+    let vp = getViewport()
+    positionOfLastViewport = camera.pos
+    zoomOfLastViewport = camera.zoom
+    socket.emit("requestingChunks", JSON.stringify({viewport:vp}))
 }
 
 
