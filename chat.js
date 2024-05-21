@@ -19,7 +19,7 @@ function appendMsgToChat(msg, user) {
 function submitMsg(msg,user) {
     console.log("emiting new msg - ", `[${user}] ${msg}`)
     
-    // idfk
+   socket.emit("sendChat", {"user": user, "msg": msg})
     
     
     return 0
