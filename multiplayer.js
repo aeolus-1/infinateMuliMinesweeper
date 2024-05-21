@@ -68,7 +68,6 @@ setInterval(() => {
 
 const socket = io("https://infms.xl83.dev", {
     reconnection: true,
-    transports: ["websocket"],
 })
 
 
