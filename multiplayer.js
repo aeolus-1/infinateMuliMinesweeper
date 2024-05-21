@@ -38,7 +38,7 @@ function outputClick(data) {
     socket.emit("makeClick", JSON.stringify(data))
 }
 
-function makeChunkRequest() {
+function getViewport() {
     var chunkBounds = {
         min:v(
             Math.floor(viewPortTiles.min.x/mainChunks.options.columns),
@@ -54,17 +54,18 @@ function makeChunkRequest() {
         chunkBounds.max.y-chunkBounds.min.y,
     ),
         buffer = 4
-    socket.emit("requestingChunks", JSON.stringify({
+    return {
         x:chunkBounds.min.x-buffer,
         y:chunkBounds.min.y-buffer,
         width:dim.x+buffer,
         height:dim.y+buffer,
-    }))
+    }
+}
+function makeChunkRequest() {
+    socket.emit("requestingChunks", JSON.stringify({viewport:getViewport()}))
 }
 
-setInterval(() => {
-    makeChunkRequest()
-}, 1000/4);
+
 
 const socket = io("https://infms.xl83.dev", {
     reconnection: true,
@@ -75,9 +76,16 @@ const socket = io("https://infms.xl83.dev", {
     socket.on('connect', function() {
 
     })
+    socket.on('appendChat', function(data) {
+        data = JSON.parse(data)
+        appendMsgToChat(data.msg, data.user)
+    })
     
     socket.on('returningChunks', function(data) {
         recieveInput(data)
+    })
+    socket.on('serverChange', function(data) {
+        makeChunkRequest()
     })
     socket.on('recieveItem', function(data) {
         recieveItem(JSON.parse(data))
