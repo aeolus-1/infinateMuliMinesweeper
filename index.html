@@ -1,273 +1,406 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>multiMinsweeper</title>
     <style>
-        body {
-            margin: 0%;
-            overflow: hidden;
+        h2 {
+            margin-bottom: 0%;
         }
-        .sideBar {
-            position: absolute;
-            z-index: 100;
-            top: 0%;
-            right: 0%;
-            margin: 20px;
-            margin-right: 60px;
-            width:10%;
-        }
-        .leaderboard {
-            background-color: white;
-            width: 100%;
-            height:350px;
-            
-            
+      body {
+        margin: 0%;
+        overflow: hidden;
+      }
+      .sideBar {
+        position: absolute;
+        z-index: 100;
+        top: 0%;
+        right: 0%;
+        margin: 20px;
+        margin-right: 60px;
+        width: 10%;
+      }
+      .leaderboard {
+        background-color: white;
+        width: 100%;
+        height: 350px;
 
-            border: solid 2px grey;
-            border-radius: 10px;
+        border: solid 2px grey;
+        border-radius: 10px;
 
-            padding: 20px;
-            overflow: scroll;
-        }
+        padding: 20px;
+        overflow: scroll;
+      }
 
-        .leaderboardSlot {
-            border-bottom: solid 3px black;
-            padding: 4px;
-        }
-        #usernameInput {
-            width:90%;
-        }
-        
-        
-        #flagSelection {
-            background-color: white;
-            width: 145px;
-            height:145px;
-            
-            
+      .leaderboardSlot {
+        border-bottom: solid 3px black;
+        padding: 4px;
+      }
+      #usernameInput {
+        width: 90%;
+      }
 
-            border: solid 2px grey;
-            border-radius: 10px;
+      #flagSelection {
+        background-color: white;
+        width: 145px;
+        height: 145px;
 
-            padding: 20px;
-            overflow: scroll;
+        border: solid 2px grey;
+        border-radius: 10px;
 
-        }
-        .flagSelectionBox {
-            width:145px;
-            height:145px;
-        }
-        .flagBox {
-            margin-left:30px;
-            width:85px;
-            height:85px;
-            box-shadow: none;
+        padding: 20px;
+        overflow: scroll;
+      }
+      .flagSelectionBox {
+        width: 145px;
+        height: 145px;
+      }
+      .flagBox {
+        margin-left: 30px;
+        width: 85px;
+        height: 85px;
+        box-shadow: none;
+      }
+      .disabled {
+        opacity: 0.3;
+      }
+      .highlighted {
+        background-color: lightgreen;
+        box-shadow: 2px 2px 2px 2px;
+      }
+      button {
+        pointer-events: all;
+        opacity: 1;
+      }
+      #chatBox {
+        position: absolute;
+        z-index: 100;
+        bottom: 0%;
+        left: 0%;
+        margin: 20px;
+        margin-right: 60px;
+        width: 206px;
+      }
+      .chat {
+        font-size: smaller;
 
+        background-color: white;
+        width: 100%;
+        height: 350px;
 
-        }
-        .disabled {
-            opacity: 0.3;
-        }
-        .highlighted {
-            background-color: lightgreen;
-            box-shadow: 2px 2px 2px 2px;
-        }
-        button {
-            pointer-events:all;
-            opacity: 1;
-        }
+        border: solid 2px grey;
+        border-radius: 10px;
+
+        padding: 5px;
+        overflow: scroll;
+      }
+      .chatInnerWrapper {
+        position: absolute;
+        bottom: 30px;
+      }
     </style>
 
-<script src="common.js"></script>
+    <script src="common.js"></script>
     <script>
-        let uidValue = getCookie("infms-uid")
-        console.log(uidValue)
-        if (uidValue == "") {
-            let uid = Math.random().toString(36).slice(2)
-            document.cookie = `infms-uid=${uid}; expires=Thu, 18 Dec 3000 12:00:00 UTC`;
-            window.multiplayerId = uid
-        } else {
-            console.log("found cookie")
-            window.multiplayerId = uidValue
-        }
-        if (location.protocol=="file:") window.multiplayerId = "reefDebug"
-       
-      </script>
+      let uidValue = getCookie("infms-uid");
+      console.log(uidValue);
+      if (uidValue == "") {
+        let uid = Math.random().toString(36).slice(2);
+        document.cookie = `infms-uid=${uid}; expires=Thu, 18 Dec 3000 12:00:00 UTC`;
+        window.multiplayerId = uid;
+      } else {
+        console.log("found cookie");
+        window.multiplayerId = uidValue;
+      }
+      if (location.protocol == "file:") window.multiplayerId = "reefDebug";
+    </script>
     <script src="names.js"></script>
-     <script src="chunks.js"></script>
-     <script src="resurrect.js"></script>
-     <script src="socket.io.min.js"></script>
-</head>
-<body oncontextmenu="return false;">
-    <div style="display: none;">
-        <img src="flag.png" id="1flagImg" alt="">
-        <img src="flags/flagTurq.png" id="2flagImg" alt="">
-        <img src="flags/flagPurp.png" id="3flagImg" alt="">
-        <img src="flags/flagChad.png" id="4flagImg" alt="">
-        <img src="flags/flagNetherlands.png" id="5flagImg" alt="">
-        <img src="flags/flagHicks.png" id="6flagImg" alt="">
-        <img src="flags/flagNerd.png" id="7flagImg" alt="">
-        <img src="flags/flagGarlic.png" id="8flagImg" alt="">
-        <img src="flags/flagRain.png" id="9flagImg" alt="">
-        <img src="flags/flagFemboy.png" id="10flagImg" alt="">
-        <img src="flags/flagCoc.png" id="11flagImg" alt="">
-        <img src="flags/flagMen.png" id="12flagImg" alt="">
-        <img src="flags/flagFurry.png" id="13flagImg" alt="">
-        <img src="flags/flagBleh.png" id="14flagImg" alt="">
-        <img src="flags/flagBleh1.png" id="15flagImg" alt="">
-        <img src="flags/flagBleh2.png" id="16flagImg" alt="">
-        <img src="bombboomy.png" id="bombImg" alt="">
+    <script src="chunks.js"></script>
+    <script src="resurrect.js"></script>
+    <script src="socket.io.min.js"></script>
+  </head>
+  <body oncontextmenu="return false;">
+    <div style="display: none">
+      <img src="flag.png" id="1flagImg" alt="" />
+      <img src="flags/flagTurq.png" id="2flagImg" alt="" />
+      <img src="flags/flagPurp.png" id="3flagImg" alt="" />
+      <img src="flags/flagChad.png" id="4flagImg" alt="" />
+      <img src="flags/flagNetherlands.png" id="5flagImg" alt="" />
+      <img src="flags/flagHicks.png" id="6flagImg" alt="" />
+      <img src="flags/flagNerd.png" id="7flagImg" alt="" />
+      <img src="flags/flagGarlic.png" id="8flagImg" alt="" />
+      <img src="flags/flagRain.png" id="9flagImg" alt="" />
+      <img src="flags/flagFemboy.png" id="10flagImg" alt="" />
+      <img src="flags/flagCoc.png" id="11flagImg" alt="" />
+      <img src="flags/flagMen.png" id="12flagImg" alt="" />
+      <img src="flags/flagFurry.png" id="13flagImg" alt="" />
+      <img src="flags/flagBleh.png" id="14flagImg" alt="" />
+      <img src="flags/flagBleh1.png" id="15flagImg" alt="" />
+      <img src="flags/flagBleh2.png" id="16flagImg" alt="" />
+      <img src="bombboomy.png" id="bombImg" alt="" />
     </div>
     <canvas id="canvas"></canvas>
-    <div style="position:absolute;top:0%;left:0%;z-index: 100;">
-        <a href="https://github.com/aeolus-1/infinateMuliMinesweeper">Github - Do stuff here</a><br>
-    <img style="margin: 10px;" src="controls.png" alt="controls"></div>
+    <div style="position: absolute; top: 0%; left: 0%; z-index: 100">
+      <a href="https://github.com/aeolus-1/infinateMuliMinesweeper"
+        >Github - Do stuff here</a
+      ><br />
+      <img style="margin: 10px" src="controls.png" alt="controls" />
+    </div>
     <div id="sideBar" class="sideBar">
-        <input id="usernameInput" type="text">
-        <hr>
-        <div id="leaderboard" class="leaderboard">
-            <div style="text-align: center; width:100%"><b>Leaderboard</b></div>
-        <div id="leaders">
-            Loading...
-        </div>
-        <hr>
-    </div>
-    <script>
-        var selectedFlag = 1
+      <input id="usernameInput" type="text" />
+      <hr />
+      <div id="leaderboard" class="leaderboard">
+        <div style="text-align: center; width: 100%"><b>Leaderboard</b></div>
+        <div id="leaders">Loading...</div>
+        <hr />
+      </div>
+
+      <script>
+        var selectedFlag = 1;
         function selectFlag(e) {
-            document.getElementById(selectedFlag).classList.remove("highlighted")
-            console.log("selected "+e.id)
-            selectedFlag = parseInt(e.id)
-            document.getElementById(selectedFlag).classList.add("highlighted")
-            socket.emit("setFlagselection", JSON.stringify({
-                id:multiplayerId,
-                selection:selectedFlag,
-            }))
-
+          document.getElementById(selectedFlag).classList.remove("highlighted");
+          console.log("selected " + e.id);
+          selectedFlag = parseInt(e.id);
+          document.getElementById(selectedFlag).classList.add("highlighted");
+          socket.emit(
+            "setFlagselection",
+            JSON.stringify({
+              id: multiplayerId,
+              selection: selectedFlag,
+            })
+          );
         }
-    </script>
-    <hr><b>Flag Selection</b>
-    <span>🪙: <span id="coinCount">000</span></span>
-        <div id="flagSelection">
-            <div class="flagSelectionBox">
-                <img class="flagBox" id="1" onclick=selectFlag(this) src="flag.png" alt=""><br>
-                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
-            </div>
-            <div class="flagSelectionBox">
-                <img class="flagBox" id="2" onclick=selectFlag(this) src="flags/flagTurq.png" alt=""><br>
-                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
-            </div>
-            <div class="flagSelectionBox">
-                <img class="flagBox" id="3" onclick=selectFlag(this) src="flags/flagOrange.png" alt=""><br>
-                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
-            </div>
-            <div class="flagSelectionBox">
-                <img class="flagBox" id="4" onclick=selectFlag(this) src="flags/flagChad.png" alt=""><br>
-                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
-            </div>
-            <div class="flagSelectionBox">
-                <img class="flagBox" id="5" onclick=selectFlag(this) src="flags/flagNetherlands.png" alt=""><br>
-                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
-            </div>
-            <div class="flagSelectionBox">
-                <img class="flagBox" id="6" onclick=selectFlag(this) src="flags/flagHicks.png" alt=""><br>
-                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
-            </div>
-            <div class="flagSelectionBox">
-                <img class="flagBox" id="7" onclick=selectFlag(this) src="flags/flagNerd.png" alt=""><br>
-                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
-            </div>
-            <div class="flagSelectionBox">
-                <img class="flagBox" id="8" onclick=selectFlag(this) src="flags/flagGarlic.png" alt=""><br>
-                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
-            </div>
-            <div class="flagSelectionBox">
-                <img class="flagBox" id="9" onclick=selectFlag(this) src="flags/flagRain.png" alt=""><br>
-                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
-            </div>
-            <div class="flagSelectionBox">
-                <img class="flagBox" id="10" onclick=selectFlag(this) src="flags/flagFemboy.png" alt=""><br>
-                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
-            </div>
-            <div class="flagSelectionBox">
-                <img class="flagBox" id="11" onclick=selectFlag(this) src="flags/flagCoc.png" alt=""><br>
-                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
-            </div>
-            <div class="flagSelectionBox">
-                <img class="flagBox" id="12" onclick=selectFlag(this) src="flags/flagMen.png" alt=""><br>
-                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
-            </div>
-            <div class="flagSelectionBox">
-                <img class="flagBox" id="13" onclick=selectFlag(this) src="flags/flagFurry.png" alt=""><br>
-                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
-            </div>
-            <div class="flagSelectionBox">
-                <img class="flagBox" id="14" onclick=selectFlag(this) src="flags/flagBleh.png" alt=""><br>
-                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
-            </div>
-            <div class="flagSelectionBox">
-                <img class="flagBox" id="15" onclick=selectFlag(this) src="flags/flagBleh1.png" alt=""><br>
-                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
-            </div>
-            <div class="flagSelectionBox">
-                <img class="flagBox" id="16" onclick=selectFlag(this) src="flags/flagBleh2.png" alt=""><br>
-                <button onclick=buyFlag(this)>Buy Flag</button><span>200 🪙</span>
-            </div>
-            
-
-
+      </script>
+      <hr />
+      <b>Flag Selection</b>
+      <span>🪙: <span id="coinCount">000</span></span>
+      <div id="flagSelection">
+        <div class="flagSelectionBox">
+          <img
+            class="flagBox"
+            id="1"
+            onclick="selectFlag(this)"
+            src="flag.png"
+            alt=""
+          /><br />
+          <button onclick="buyFlag(this)">Buy Flag</button><span>200 🪙</span>
         </div>
-
-        
-        
-        
-        
-
+        <div class="flagSelectionBox">
+          <img
+            class="flagBox"
+            id="2"
+            onclick="selectFlag(this)"
+            src="flags/flagTurq.png"
+            alt=""
+          /><br />
+          <button onclick="buyFlag(this)">Buy Flag</button><span>200 🪙</span>
+        </div>
+        <div class="flagSelectionBox">
+          <img
+            class="flagBox"
+            id="3"
+            onclick="selectFlag(this)"
+            src="flags/flagOrange.png"
+            alt=""
+          /><br />
+          <button onclick="buyFlag(this)">Buy Flag</button><span>200 🪙</span>
+        </div>
+        <div class="flagSelectionBox">
+          <img
+            class="flagBox"
+            id="4"
+            onclick="selectFlag(this)"
+            src="flags/flagChad.png"
+            alt=""
+          /><br />
+          <button onclick="buyFlag(this)">Buy Flag</button><span>200 🪙</span>
+        </div>
+        <div class="flagSelectionBox">
+          <img
+            class="flagBox"
+            id="5"
+            onclick="selectFlag(this)"
+            src="flags/flagNetherlands.png"
+            alt=""
+          /><br />
+          <button onclick="buyFlag(this)">Buy Flag</button><span>200 🪙</span>
+        </div>
+        <div class="flagSelectionBox">
+          <img
+            class="flagBox"
+            id="6"
+            onclick="selectFlag(this)"
+            src="flags/flagHicks.png"
+            alt=""
+          /><br />
+          <button onclick="buyFlag(this)">Buy Flag</button><span>200 🪙</span>
+        </div>
+        <div class="flagSelectionBox">
+          <img
+            class="flagBox"
+            id="7"
+            onclick="selectFlag(this)"
+            src="flags/flagNerd.png"
+            alt=""
+          /><br />
+          <button onclick="buyFlag(this)">Buy Flag</button><span>200 🪙</span>
+        </div>
+        <div class="flagSelectionBox">
+          <img
+            class="flagBox"
+            id="8"
+            onclick="selectFlag(this)"
+            src="flags/flagGarlic.png"
+            alt=""
+          /><br />
+          <button onclick="buyFlag(this)">Buy Flag</button><span>200 🪙</span>
+        </div>
+        <div class="flagSelectionBox">
+          <img
+            class="flagBox"
+            id="9"
+            onclick="selectFlag(this)"
+            src="flags/flagRain.png"
+            alt=""
+          /><br />
+          <button onclick="buyFlag(this)">Buy Flag</button><span>200 🪙</span>
+        </div>
+        <div class="flagSelectionBox">
+          <img
+            class="flagBox"
+            id="10"
+            onclick="selectFlag(this)"
+            src="flags/flagFemboy.png"
+            alt=""
+          /><br />
+          <button onclick="buyFlag(this)">Buy Flag</button><span>200 🪙</span>
+        </div>
+        <div class="flagSelectionBox">
+          <img
+            class="flagBox"
+            id="11"
+            onclick="selectFlag(this)"
+            src="flags/flagCoc.png"
+            alt=""
+          /><br />
+          <button onclick="buyFlag(this)">Buy Flag</button><span>200 🪙</span>
+        </div>
+        <div class="flagSelectionBox">
+          <img
+            class="flagBox"
+            id="12"
+            onclick="selectFlag(this)"
+            src="flags/flagMen.png"
+            alt=""
+          /><br />
+          <button onclick="buyFlag(this)">Buy Flag</button><span>200 🪙</span>
+        </div>
+        <div class="flagSelectionBox">
+          <img
+            class="flagBox"
+            id="13"
+            onclick="selectFlag(this)"
+            src="flags/flagFurry.png"
+            alt=""
+          /><br />
+          <button onclick="buyFlag(this)">Buy Flag</button><span>200 🪙</span>
+        </div>
+        <div class="flagSelectionBox">
+          <img
+            class="flagBox"
+            id="14"
+            onclick="selectFlag(this)"
+            src="flags/flagBleh.png"
+            alt=""
+          /><br />
+          <button onclick="buyFlag(this)">Buy Flag</button><span>200 🪙</span>
+        </div>
+        <div class="flagSelectionBox">
+          <img
+            class="flagBox"
+            id="15"
+            onclick="selectFlag(this)"
+            src="flags/flagBleh1.png"
+            alt=""
+          /><br />
+          <button onclick="buyFlag(this)">Buy Flag</button><span>200 🪙</span>
+        </div>
+        <div class="flagSelectionBox">
+          <img
+            class="flagBox"
+            id="16"
+            onclick="selectFlag(this)"
+            src="flags/flagBleh2.png"
+            alt=""
+          /><br />
+          <button onclick="buyFlag(this)">Buy Flag</button><span>200 🪙</span>
+        </div>
+      </div>
     </div>
-    
-    <script>            
-        var nameInput = document.getElementById("usernameInput")
-
-
-        var nameStorage = localStorage.getItem("username")
-        if (nameStorage != null) {
-            nameInput.value = nameStorage
-        } else {
-            nameInput.value = names[randInt(0, names.length-1)].split(",")[0]
-            localStorage.setItem("username", getName())
-        }
-
-        nameInput.placeholder = names[randInt(0, names.length-1)].split(",")[0]
-
-        nameInput.onchange = ()=>{
-            localStorage.setItem("username", getName())
-        }
-
-        function getName() {
-            return nameInput.value||nameInput.placeholder
-        }
-
-        var canvas = document.getElementById("canvas")
-        canvas.width = window.innerWidth
-        canvas.height = window.innerHeight
+    <div id="chatBox">
         
+        <h2>Chat</h2>
+        <label for="chatUsername">Username: </label>
+      <input id="chatUsername" name="chatUsername" type="text" value="unnamed" style="width: 90px;"/>
+      <hr>
+      
+      <div class="chat">
+        <div class="chatInnerWrapper">
+          <div id="chatContainer">
+            
+          </div>
+          <hr />
+          <input
+            type="text"
+            name="chatSubmit"
+            id="chatSubmit"
+            style="width: 133px"
+          /><button id="chatSubmitButton">Submit</button>
+        </div>
+      </div>
 
-        var ctx = canvas.getContext("2d")
+      <hr />
+    </div>
+    <script src="chat.js"></script>
+
+    <script>
+      var nameInput = document.getElementById("usernameInput");
+
+      var nameStorage = localStorage.getItem("username");
+      if (nameStorage != null) {
+        nameInput.value = nameStorage;
+      } else {
+        nameInput.value = names[randInt(0, names.length - 1)].split(",")[0];
+        localStorage.setItem("username", getName());
+      }
+
+      nameInput.placeholder = names[randInt(0, names.length - 1)].split(",")[0];
+
+      nameInput.onchange = () => {
+        localStorage.setItem("username", getName());
+      };
+
+      function getName() {
+        return nameInput.value || nameInput.placeholder;
+      }
+
+      var canvas = document.getElementById("canvas");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      var ctx = canvas.getContext("2d");
     </script>
     <script src="multiplayer.js"></script>
     <script src="controls.js"></script>
     <script src="shop.js"></script>
     <script src="game.js"></script>
     <script>
-        function l() {
-            renderLoop()
-            requestAnimationFrame(l)
-        }
-        l()
-        
+      function l() {
+        renderLoop();
+        requestAnimationFrame(l);
+      }
+      l();
     </script>
-
-</body>
+  </body>
 </html>
