@@ -86,7 +86,6 @@ document.addEventListener("keyup", (e)=>{keys[e.key.toLowerCase()]=false})
 
 function runControls() {
     var speed = 20*camera.zoom
-    console.log(keys)
     if (keys.w||keys.arrowup) camera.target.y -= -speed
     if (keys.s||keys.arrowdown) camera.target.y += -speed
     if (keys.a||keys.arrowleft) camera.target.x -= -speed
