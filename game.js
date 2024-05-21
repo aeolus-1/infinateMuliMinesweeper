@@ -40,7 +40,7 @@ function renderLoop() {
     )
     camera.zoom = camera.zoom + ((camera.targetZoom-camera.zoom)*0.3)
 
-    runControls()
+    if (document.activeElement.name!="chatSubmit"&&document.activeElement.id!="usernameInput") runControls()
 }
 var avalibleTiles = {},
     viewPortTiles = {
@@ -222,12 +222,13 @@ function runClick(tilePos, flag=false, tick=4) {
         flag:flag,
         name:getName()
     })
-
+/*
     console.log(tilePos)
     var count = countNeighbours(tilePos)
 
 
     var tile = mainChunks.requestTile(tilePos.x,tilePos.y)
+    console.log(tile)
     if (!tile.uncovered) {
         if (flag) {
             tile.flagged = !tile.flagged
@@ -239,7 +240,7 @@ function runClick(tilePos, flag=false, tick=4) {
         }
         
     } else tile.flagged = false
-
+*/
     
 
     
