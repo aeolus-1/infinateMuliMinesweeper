@@ -105,7 +105,7 @@ const socket = io("https://infms.xl83.dev", {
         } else {
             recieveItem(data.item)
             let currentUsername = document.getElementById("usernameInput").value
-            submitMsg(`User ${currentUsername} pulled a "${data.item}"`,"SERVER")
+            submitMsg(`User ${currentUsername} pulled a "${data.item.name}" flag`,"SERVER")
         }
     })
     

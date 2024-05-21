@@ -9,7 +9,7 @@ function appendMsgToChat(msg, user) {
   // INSERTS IT AS TEXT ONLY!!!!!!!!!!!!!!!!!!!!
   // NO MORE SCRIPT INJECTING!!!!!!!!!!!!!!!!!!!
   msgBox.children[0].textContent = `[${user}]`
-  msgBox.children[1].textContent = `[${msg}]`
+  msgBox.children[1].textContent = `${msg}`
 
   chatContainer.appendChild(msgBox)
 
