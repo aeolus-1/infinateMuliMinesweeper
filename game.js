@@ -20,10 +20,12 @@ function renderLoop() {
     drawGrid(camera.gridScale)
 
 
-    let viewportSize = window.innerWidth*camera.zoom
-    if (Math.abs(positionOfLastViewport.x-camera.pos.x)>viewportSize*0.75 || zoomOfLastViewport-camera.zoom<-0.5) {
-        console.log("made req")
-        makeChunkRequest()
+    if (window.location.protocol != "file:") {
+        let viewportSize = window.innerWidth*camera.zoom
+        if (Math.abs(positionOfLastViewport.x-camera.pos.x)>viewportSize*0.75 || zoomOfLastViewport-camera.zoom<-0.5) {
+            console.log("made req")
+            makeChunkRequest()
+        }
     }
 
     
@@ -47,6 +49,30 @@ var avalibleTiles = {},
         min:v(),
         max:v(),
     }
+function updateLocalChunks() {
+    avalibleTiles = {}
+    function f(chunks) {
+        for (let i = 0; i < chunks.length; i++) {
+            const chunkRow = chunks[i];
+            for (let t = 0; t < chunkRow.length; t++) {
+                const chunk = chunkRow[t];
+                var grid = chunk.grid
+                for (let i = 0; i < grid.length; i++) {
+                    const rows = grid[i];
+                    for (let j = 0; j < rows.length; j++) {
+                        const tile = rows[j];
+                        avalibleTiles[`${Math.round(tile.pos.x*5)},${Math.round(tile.pos.y*5)}`] = tile
+                    }
+                }
+            }
+            
+        }
+    }
+    f(mainChunks.chunkMaps.x0y0array.array)
+    f(mainChunks.chunkMaps.x1y0array.array)
+    f(mainChunks.chunkMaps.x0y1array.array)
+    f(mainChunks.chunkMaps.x1y1array.array)
+}
 function drawGrid(size) {
     let grid = size
 
@@ -157,7 +183,9 @@ function drawSquare(pos,tile,size) {
     ctx.fillStyle = tile.uncovered?"#bbb":"#fff"
     ctx.fillRect(pos.x, pos.y, size,size)
     
+    
     if (tile.uncovered && !tile.mine) {
+        
         var color = ["","blue","green","red","purple","black","gray","maroon","turquoise"][tile.count]
         ctx.fillStyle = color
 
@@ -170,6 +198,7 @@ function drawSquare(pos,tile,size) {
         ctx.fillText(tile.count,pos.x+(size/2)+(-width/2),pos.y+(size/2))
 
         if (tile.lootBox) {
+            
             var fontSize = 40
                 ctx.font = `bold ${fontSize}px Calibri`
                 ctx.textBaseline = "middle"
@@ -216,31 +245,39 @@ function runClick(tilePos, flag=false, tick=4) {
     console.log(touch.lastTime)
     if (touch.lastTime>200&&mobile)flag = true
     
-//    if (window.location.protocol != "file:") {
-    outputClick({
-        pos:tilePos,
-        flag:flag,
-        name:getName()
-    })
-/*
-    console.log(tilePos)
-    var count = countNeighbours(tilePos)
+    if (window.location.protocol != "file:") {
+        outputClick({
+            pos:tilePos,
+            flag:flag,
+            name:getName()
+        })
+    } else {
+        updateLocalChunks()
+        console.log(tilePos)
+        var count = countNeighbours(tilePos)
 
 
-    var tile = mainChunks.requestTile(tilePos.x,tilePos.y)
-    console.log(tile)
-    if (!tile.uncovered) {
-        if (flag) {
-            tile.flagged = !tile.flagged
-            tile.flaggedBy = getName()
-        } else if (!tile.flagged) {
-            tile.uncovered = true
-            tile.count = count
-            if (tile.mine && !flag)alert("you are stupid lol")
+        var tile = mainChunks.requestTile(tilePos.x,tilePos.y)
+        console.log(tile)
+
+        if (tile.lootBox&&tile.uncovered) {
+            alert("loot!!!!!!!!!")
+            tile.lootBox = false
         }
-        
-    } else tile.flagged = false
-*/
+        if (!tile.uncovered) {
+            if (flag) {
+                tile.flagged = !tile.flagged
+                tile.flaggedBy = getName()
+            } else if (!tile.flagged) {
+                tile.uncovered = true
+                tile.count = count
+                if (tile.mine && !flag)alert("you are stupid lol")
+            }
+            
+        } else tile.flagged = false
+    }
+    
+
     
 
     

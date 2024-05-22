@@ -27,11 +27,12 @@ function tileArray2d(e, t, n, r, c) {
 
 function cTile(e, t) {
     this.pos = v(e, t)
-    var dst = getDst(v(0,0),v(e,t))*0.2,
-        num = 7-Math.pow(Math.sqrt(dst*0.13),3.2)
-    this.mine = false//Math.random()<(1/num)
-    this.uncovered = false
+    var dst = getDst(v(0,0),v(e,t))*0.5,
+        num = Math.abs(Math.sin(dst))*0.10
+    this.mine = Math.random()<((0.05+num))*0.8
+    this.uncovered = 1
     this.flagged = false
+    this.lootBox = this.mine?false:Math.random()<(1/65)
     this.flaggedBy = null
     this.loaded = true
     this.count = 0
@@ -44,7 +45,7 @@ function cChunk(e, t) {
         (this.pos = e);
 }
 ;
-let startingSize = 5;
+let startingSize = 20;
 
 class Chunks {
     constructor(options) {

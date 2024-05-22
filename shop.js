@@ -122,9 +122,9 @@ function runShop() {
                 box.children[3].textContent = `${shopData.flags[box.children[0].id].cost} 🪙`
                 
             } else {
-                box.style["pointer-events"] = (shopData.flags[selection].rarity=="rare")?"none":""
+                box.style["pointer-events"] = ""
 
-                box.children[2].textContent = (shopData.flags[selection].rarity=="rare")?"Found in lootboxes":"Bought"
+                box.children[2].textContent = "Bought"
                 box.children[3].textContent = ``
             }
     }
