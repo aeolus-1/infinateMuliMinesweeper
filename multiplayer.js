@@ -72,7 +72,7 @@ function makeChunkRequest() {
 }
 
 
-if (window.location.protocol != "file:") {
+
 const socket = io("https://infms.xl83.dev", {
     reconnection: true,
 })
@@ -115,4 +115,3 @@ const socket = io("https://infms.xl83.dev", {
         }
     })
     
-}
