@@ -14,14 +14,14 @@ var mainChunks = new Chunks({
 var mobile = false
 
 function renderLoop() {
-    canvas.width = window.innerWidth
-        canvas.height = window.innerHeight
+    canvas.width = window.outerWidth
+        canvas.height = window.outerHeight
     ctx.clearRect(0,0,canvas.width,canvas.height)
     drawGrid(camera.gridScale)
 
 
     if (window.location.protocol != "file:") {
-        let viewportSize = window.innerWidth*camera.zoom
+        let viewportSize = window.outerWidth*camera.zoom
         if (Math.abs(positionOfLastViewport.x-camera.pos.x)>viewportSize*0.75 || zoomOfLastViewport-camera.zoom<-0.5) {
             console.log("made req")
             makeChunkRequest()
@@ -77,8 +77,8 @@ function drawGrid(size) {
     let grid = size
 
     var dim = v(
-        window.innerWidth*camera.zoom,
-        window.innerHeight*camera.zoom
+        window.outerWidth*camera.zoom,
+        window.outerHeight*camera.zoom
     )
 
     function findTile(x,y) {
@@ -94,7 +94,7 @@ function drawGrid(size) {
     
         
     ctx.save()
-    ctx.translate(window.innerWidth/2,window.innerHeight/2)
+    ctx.translate(window.outerWidth/2,window.outerHeight/2)
     ctx.scale(1/camera.zoom,1/camera.zoom)
     //ctx.translate(-window.innerWidth*0.5*camera.zoom,-window.innerHeight*0.5*camera.zoom)
     
@@ -103,8 +103,8 @@ function drawGrid(size) {
     var tilePoses = []
 
     var gridSize = v(
-        Math.floor((window.innerWidth*camera.zoom)/size)+4,
-        Math.floor((window.innerHeight*camera.zoom)/size)+4
+        Math.floor((window.outerWidth*camera.zoom)/size)+4,
+        Math.floor((window.outerHeight*camera.zoom)/size)+4
     ),
         cellSize = size,
         modScreen = v(

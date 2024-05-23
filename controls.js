@@ -91,7 +91,7 @@ function runControls() {
     if (keys.a||keys.arrowleft) camera.target.x -= -speed
     if (keys.d||keys.arrowright) camera.target.x += -speed
 
-    function add(num) {camera.targetZoom = clamp(camera.targetZoom+num,0.25, 2)}
+    function add(num) {camera.targetZoom = clamp(camera.targetZoom+num,0.25, 1.2)}
 
     if (keys["="]) add(-0.05)
     if (keys["-"]) add(0.05)
