@@ -151,7 +151,7 @@
       <img style="margin: 10px" src="controls.png" alt="controls" />
     </div>
     <div id="sideBar" class="sideBar">
-      <input id="usernameInput" type="text" />
+      <input id="usernameInput" type="text" maxlength="5"/>
       <hr />
       <div id="leaderboard" class="leaderboard">
         <div style="text-align: center; width: 100%"><b>Leaderboard</b></div>
@@ -256,6 +256,7 @@
             name="chatSubmit"
             id="chatSubmit"
             style="width: 133px"
+            maxlength="250"
           /><button id="chatSubmitButton">Submit</button>
         </div>
       </div>
@@ -282,7 +283,7 @@
       };
 
       function getName() {
-        return nameInput.value || nameInput.placeholder;
+        return (nameInput.value || nameInput.placeholder).substring(0, 5);
       }
 
       var canvas = document.getElementById("canvas");
