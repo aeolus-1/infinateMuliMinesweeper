@@ -96,7 +96,7 @@ function drawGrid(size) {
     ctx.save()
     ctx.translate(window.outerWidth/2,window.outerHeight/2)
     ctx.scale(1/camera.zoom,1/camera.zoom)
-    //ctx.translate(-window.innerWidth*0.5*camera.zoom,-window.innerHeight*0.5*camera.zoom)
+    //ctx.translate(-window.outerWidth*0.5*camera.zoom,-window.outerHeight*0.5*camera.zoom)
     
     ctx.translate(camera.pos.x,camera.pos.y)
     

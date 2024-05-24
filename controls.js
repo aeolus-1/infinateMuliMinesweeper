@@ -2,12 +2,12 @@ var mouse = {
     pos:v()
 }
 canvas.addEventListener("mousemove", (e)=>{
-    mouse.pos.x = (e.offsetX-(window.innerWidth/2))*camera.zoom
-    mouse.pos.y = (e.offsetY-(window.innerHeight/2))*camera.zoom
+    mouse.pos.x = (e.offsetX-(window.outerWidth/2))*camera.zoom
+    mouse.pos.y = (e.offsetY-(window.outerHeight/2))*camera.zoom
 })
 canvas.addEventListener("mousedown", (e)=>{
-    mouse.pos.x = (e.offsetX-(window.innerWidth/2))*camera.zoom
-    mouse.pos.y = (e.offsetY-(window.innerHeight/2))*camera.zoom
+    mouse.pos.x = (e.offsetX-(window.outerWidth/2))*camera.zoom
+    mouse.pos.y = (e.offsetY-(window.outerHeight/2))*camera.zoom
 
     var screenPos = v(
         (mouse.pos.x-camera.pos.x),
@@ -34,8 +34,8 @@ canvas.addEventListener("touchstart", (e)=>{
     
     var pos = v(e.touches[0].screenX, e.touches[0].screenY)
     newPos = v(
-        (pos.x-(window.innerWidth/2))*camera.zoom,
-    (pos.y-(window.innerHeight/2))*camera.zoom)
+        (pos.x-(window.outerWidth/2))*camera.zoom,
+    (pos.y-(window.outerHeight/2))*camera.zoom)
     if (touch.pos == undefined) touch.pos = {...newPos}
     console.log(touch.pos)
 
@@ -43,8 +43,8 @@ canvas.addEventListener("touchstart", (e)=>{
 document.addEventListener("touchmove", (e)=>{
     var pos = v(e.touches[0].screenX, e.touches[0].screenY)
     newPos = v(
-        (pos.x-(window.innerWidth/2))*camera.zoom,
-    (pos.y-(window.innerHeight/2))*camera.zoom)
+        (pos.x-(window.outerWidth/2))*camera.zoom,
+    (pos.y-(window.outerHeight/2))*camera.zoom)
     if (touch.pos == undefined) touch.pos = {...newPos}
 
     var diff = v(
