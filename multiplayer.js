@@ -1,8 +1,21 @@
 
-
+var rollingPing = []
+function getPing() {
+    let p = 0
+    rollingPing.forEach((e)=>{p+=e})
+    return p/rollingPing.length
+}
 
 function recieveInput(chunkString) {
     var data = JSON.parse(chunkString)
+
+    if (data.timestamp) {
+        rollingPing.push((new Date()).getTime()-data.timestamp)
+        if (rollingPing.length>5) {
+            rollingPing.shift()
+        }
+    }
+
     var chunks = data.chunks
     avalibleTiles = {}
 
@@ -89,6 +102,14 @@ const socket = io("https://infms.xl83.dev", {
     
     socket.on('returningChunks', function(data) {
         recieveInput(data)
+        
+        if (getPing()) {
+            document.getElementById("pingMeter").style.display = ""
+            document.getElementById("pingMeter").textContent = getPing() 
+        } else {
+            document.getElementById("pingMeter").style.display = "none"
+        }
+        
     })
     socket.on('serverChange', function(data) {
         makeChunkRequest()
